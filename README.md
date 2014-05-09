@@ -3,4 +3,9 @@
 
 Welcome to the Backbeam *documentation*.
 
-    asdfasdf
+```objectivec
+while (YES) {
+  NSLog(@"<Hello world!>");
+}
+
+```

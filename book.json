@@ -4,18 +4,21 @@
     "title": null,
     "description": null,
     "github": null,
-    "plugins": [],
+    "plugins": ["disqus"],
     "pluginsConfig": {
         "fontSettings": {
             "theme": "sepia",
             "family": "serif",
             "size": 1
+        },
+        "disqus": {
+            "shortName": "backbeam"
         }
     },
     "links": {
-        "home": "https://backbeam.io",
+        "home": "https://backbeam.io/documentation",
         "about": false,
-        "issues": null,
+        "issues": false,
         "contribute": null,
         "sharing": {
             "google": false,
