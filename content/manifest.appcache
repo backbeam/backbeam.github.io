@@ -1,9 +1,9 @@
 CACHE MANIFEST
-# Revision 1399649998972
+# Revision 1399650440514
 
 CACHE:
-ios-server-side-logic.html
 android-authentication.html
+ios-server-side-logic.html
 android-data.html
 android-push-notifications.html
 android-realtime.html
@@ -72,8 +72,8 @@ gitbook/jsrepl/sandbox.js
 gitbook/print.css
 gitbook/style.css
 gitbook/plugins/gitbook-plugin-disqus/plugin.js
-gitbook/plugins/gitbook-plugin-mathjax/plugin.js
 gitbook/plugins/gitbook-plugin-mixpanel/plugin.js
+gitbook/plugins/gitbook-plugin-mathjax/plugin.js
 
 NETWORK:
 *

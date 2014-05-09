@@ -3,13 +3,14 @@
 Regardless you are using client-side or server-side code you will handle information wrapped in objects. In this section you will learn the basic classes and methods available to access that information.
 
 > The only case in which you are not interested in this
-> section is when you write server-side logic and
-> always return JSON. In that case you don't receive
-> backbeam objects in your code. You will receive
-> the JSON data structure returned by the server that
-> will be composed of NSDictionaries, NSArrays,
-> NSStrings, etc.
-> Check the [server-side logic section if this is yoru case](ios-servers-side.md)
+> section is when you write server-side logic and you
+> always return JSON to the client-side code. In that
+> case you don't receive backbeam objects in your code.
+> You will receive the JSON data structure returned by
+> the server that will be composed of NSDictionaries,
+> NSArrays, NSStrings, etc.
+>
+> Check the [server-side logic section if this is your case](ios-servers-side.md)
 
 ## Objects
 
