@@ -1,13 +1,13 @@
 CACHE MANIFEST
-# Revision 1399606289797
+# Revision 1399608185078
 
 CACHE:
 Query language.html
-Android SDK.html
+Control panel.html
 Features.html
 JavaScript SDK.html
 Overview.html
-Control panel.html
+Android SDK.html
 index.html
 iOS SDK.html
 gitbook/app.js

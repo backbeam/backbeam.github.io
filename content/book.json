@@ -1,5 +1,5 @@
 {
-    "output": "_book",
+    "output": "content",
     "generator": "site",
     "title": null,
     "description": null,
@@ -20,7 +20,7 @@
         "sharing": {
             "google": false,
             "facebook": false,
-            "twitter": "http://twitter.com/backbeamio"
+            "twitter": null
         }
     }
 }
