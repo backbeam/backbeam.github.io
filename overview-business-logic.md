@@ -13,9 +13,11 @@ We support both ways to write an application because both have pros and cons. So
 These are some things to have in mind:
 
 *  Client-side logic is easier for mobile developers because you don't have to write server-side code in JavaScript. You just need to write code in your usual development environment.
-*  The server-side logic can be updated at any moment without releasing new versions of your application. Imagine you want to do something additional in your business logic such as saving statistics, sending emails, sending push notificaitons, etc. You can just update the server-side code and you won't have to change your client-side code. So all the installed applications are *updated* with the new business logic instantly.
-*  The client-side logic requires API keys. The server-side logic don't, so it doesn't have secrets inside the code.
+*  Server-side logic can be updated at any moment without releasing new versions of your application. Imagine you want to do something additional in your business logic such as saving statistics, sending emails, sending push notificaitons, etc. You can just update the server-side code and you won't have to change your client-side code. So all the installed applications are *updated* with the new business logic instantly.
+*  Client-side logic requires API keys. The server-side logic don't, so it doesn't have secrets inside the code.
 * Server-side logic can be written once and be used in any platform (iOS, Android, web)
+* Server-side logic requires less HTTP requests between the client and the server so your application will be faster.
+* Server-side errors are logged automatically in the *logs* section of the control panel.
 
 ## More details about server-side logic
 

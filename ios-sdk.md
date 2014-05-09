@@ -15,6 +15,35 @@ pod install
 
 Now you can open the `*.xcworkspace` directory created by CocoaPods.
 
+In your code you will need to import `Backbeam.h` as follows:
+
+```objectivec
+#import "Backbeam.h"
+```
+
+If you put that import statement in your `*Prefix.pch` file then all your files will import it automatically. Your prefix file could look like this:
+
+```objectivec
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "Backbeam.h" // import Backbeam
+#endif
+
+```
+
 ## Configure your application
 
 The best place to configure the Backbeam framework is in your `AppDelegate`. The configuration depends on a few things. First of all you need to decide if you are going to use server-side business logic or not. [Check out the differences between both possibilities](overview-business-logic.md).
@@ -34,9 +63,10 @@ If you are going to use client-side business-logic you just need to tell Backbea
         environment:@"dev"];
 
     // set up your application interface...
-}```
+}
+```
 
-You can generate new API keys in the control panel.
+You can generate new API keys in the control panel as you can see in the following screenshot.
 
 ![Control panel - API keys](../images/control-panel-api-keys.png)
 
@@ -72,9 +102,9 @@ Now it's time to configure your application to use server-side logic. All you ne
 }
 ```
 
-### Using both: client-side and server-side logic
+### Using both client-side and server-side logic
 
-You can use client-side and server-side logic at the same time in your application. You just need to set all the configuration parameters: API keys, web version and HTTP auth token. But our recommendation is always use one method or the other. But, yes, you can use both at the same time.
+You can use client-side and server-side logic at the same time in your application. You just need to set all the configuration parameters: API keys, web version and HTTP auth token. But our recommendation is to always use one method or the other. But, yes, you can use both at the same time.
 
 ### Optional settings to configure
 

@@ -78,3 +78,8 @@ note.iosPayload = [NSDictionary dictionaryWithObjectsAndKeys:@"this is some valu
 ````
 
 If you are using server-side logic then the server (any of your web controllers) should be the one that should send the push notification.
+
+## Troubleshooting push notifications
+
+TODO: control panel and logs.
+
