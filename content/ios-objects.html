@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
         
         <meta charset="UTF-8">
-        <title>Query language | Backbeam documentation</title>
+        <title>Objects and query results | Backbeam documentation</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="./overview-control-panel.html" />
+        <link rel="next" href="./ios-data.html" />
         
         
-        <link rel="prev" href="./overview-features.html" />
+        <link rel="prev" href="./ios-sdk.html" />
         
 
-        <meta property="og:title" content="Query language | Backbeam documentation">
+        <meta property="og:title" content="Objects and query results | Backbeam documentation">
         <meta property="og:site_name" content="Backbeam documentation">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="1.2" data-basepath="." data-revision="1399649998971">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.1" data-basepath="." data-revision="1399649998971">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -108,7 +108,7 @@
 
         
         <li>
-            <a href="https://github.com/backbeam/backbeam.github.io/edit/master/overview-query-language.md" target="blank">Edit and Contribute</a>
+            <a href="https://github.com/backbeam/backbeam.github.io/edit/master/ios-objects.md" target="blank">Edit and Contribute</a>
         </li>
         
 
@@ -417,7 +417,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 9.375%;min-width: 6.25%;"></div>
+        <div class="inner" style="width: 25%;min-width: 21.875%;"></div>
     </div>
     <div class="chapters">
     
@@ -429,15 +429,15 @@
     
         <a href="./overview-query-language.html" title="Query language" class="chapter done " data-progress="1.2" style="left: 9.375%;"></a>
     
-        <a href="./overview-control-panel.html" title="Control panel" class="chapter  " data-progress="1.3" style="left: 12.5%;"></a>
+        <a href="./overview-control-panel.html" title="Control panel" class="chapter done " data-progress="1.3" style="left: 12.5%;"></a>
     
-        <a href="./overview-business-logic.html" title="Where to write the business logic" class="chapter  " data-progress="1.4" style="left: 15.625%;"></a>
+        <a href="./overview-business-logic.html" title="Where to write the business logic" class="chapter done " data-progress="1.4" style="left: 15.625%;"></a>
     
-        <a href="./overview-authentication.html" title="Users authentication" class="chapter  " data-progress="1.5" style="left: 18.75%;"></a>
+        <a href="./overview-authentication.html" title="Users authentication" class="chapter done " data-progress="1.5" style="left: 18.75%;"></a>
     
-        <a href="./ios-sdk.html" title="iOS SDK" class="chapter  new-chapter" data-progress="2" style="left: 21.875%;"></a>
+        <a href="./ios-sdk.html" title="iOS SDK" class="chapter done new-chapter" data-progress="2" style="left: 21.875%;"></a>
     
-        <a href="./ios-objects.html" title="Objects and query results" class="chapter  " data-progress="2.1" style="left: 25%;"></a>
+        <a href="./ios-objects.html" title="Objects and query results" class="chapter done " data-progress="2.1" style="left: 25%;"></a>
     
         <a href="./ios-data.html" title="Manipulating data" class="chapter  " data-progress="2.2" style="left: 28.125%;"></a>
     
@@ -492,9 +492,106 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_25">
+                    <section class="normal" id="section-gitbook_10">
                     
-                        <h1 id="query-language">Query language</h1>
+                        <h1 id="objects-and-query-results">Objects and query results</h1>
+<p>Regardless you are using client-side or server-side code you will handle information wrapped in objects. In this section you will learn the basic classes and methods available to access that information.</p>
+<blockquote>
+<p>The only case in which you are not interested in this
+section is when you write server-side logic and
+always return JSON. In that case you don&#39;t receive
+backbeam objects in your code. You will receive
+the JSON data structure returned by the server that
+will be composed of NSDictionaries, NSArrays,
+NSStrings, etc.
+Check the <a href="ios-servers-side.html">server-side logic section if this is yoru case</a></p>
+</blockquote>
+<h2 id="objects">Objects</h2>
+<p>Most of the time you will read and manipulate the data stored in the database using <code>BBObjects</code>. This is a very basic class that encapsulates the information of a record in your database. You can access its fields and some other metainformation. These are the most important methods in the <code>BBObject</code> class</p>
+<pre><code class="lang-objectivec">- (<span class="hljs-built_in">NSString</span>*)identifier; <span class="hljs-comment">// unique identifier of this object</span>
+- (<span class="hljs-built_in">NSString</span>*)entity; <span class="hljs-comment">// entity name</span>
+- (<span class="hljs-built_in">NSDate</span>*)createdAt; <span class="hljs-comment">// NSDate object indicating the created time</span>
+- (<span class="hljs-built_in">NSDate</span>*)updatedAt; <span class="hljs-comment">// NSDate object indicating the last updated time</span>
+
+<span class="hljs-comment">// Methods to get values of fields of a certain type</span>
+
+<span class="hljs-comment">// For text, textarea and rich-text fields</span>
+- (<span class="hljs-built_in">NSString</span>*)stringForField:(<span class="hljs-built_in">NSString</span>*)field;
+
+<span class="hljs-comment">// For date fields</span>
+- (<span class="hljs-built_in">NSDate</span>*)dateForField:(<span class="hljs-built_in">NSString</span>*)field;
+
+<span class="hljs-comment">// For number fields</span>
+- (<span class="hljs-built_in">NSNumber</span>*)numberForField:(<span class="hljs-built_in">NSString</span>*)field;
+
+<span class="hljs-comment">// For relationships "to-one"</span>
+- (BBObject*)objectForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// For location fields</span>
+- (BBLocation*)locationForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// For joined results in a query</span>
+- (BBJoinResult*)joinResultForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// For boolean fields (use NSNumber.booleanValue)</span>
+- (<span class="hljs-built_in">NSNumber</span>*)booleanForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// For day fields</span>
+- (NSDateComponents*)dayForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// For JSON fields</span>
+- (<span class="hljs-keyword">id</span>)JSONForField:(<span class="hljs-built_in">NSString</span>*)key;
+
+<span class="hljs-comment">// If you want the value of a field no matter what type it is</span>
+- (<span class="hljs-keyword">id</span>)rawValueForField:(<span class="hljs-built_in">NSString</span>*)key;
+</code></pre>
+<p>You have equivalent methods to set the values of each field depending on its value type, but you only need them when using client-side business logic. You will learn more about that in the section about manipulating data</p>
+<p><code>BBObjects</code> also has some useful methods to know the state of the objects.</p>
+<pre><code class="lang-objectivec">- (<span class="hljs-built_in">BOOL</span>)isEmpty; <span class="hljs-comment">// returns YES if this object has zero field values</span>
+
+- (<span class="hljs-built_in">BOOL</span>)idDirty; <span class="hljs-comment">// returns YES if the object was changed and not yet saved</span>
+
+- (<span class="hljs-built_in">BOOL</span>)isNew; <span class="hljs-comment">// returns YES if the object hasn't been saved for the first time</span>
+</code></pre>
+<h2 id="join-results">Join results</h2>
+<p>Many times you will perform joins in your BQL queries and other operations. If the join is made in a relationship &quot;to one&quot; you can just use <code>[object objectForField:@&quot;fieldName&quot;]</code> to get the value of the relationship. Let&#39;s see an example where the BQL query is made in the client side:</p>
+<pre><code class="lang-objectivec">BBQuery* query = [Backbeam queryForEntity:@<span class="hljs-string">"event"</span>];
+[query setQuery:@<span class="hljs-string">"join place"</span>];
+[query fetch:<span class="hljs-number">100</span> offset:<span class="hljs-number">0</span> success:^(<span class="hljs-built_in">NSArray</span>* objects, <span class="hljs-built_in">NSInteger</span> totalCount, <span class="hljs-built_in">BOOL</span> fromCache) {
+    BBObject *event = objects[<span class="hljs-number">0</span>]; <span class="hljs-comment">// pick a place (in real code check the array.count attribute first)</span>
+    BBObject *place = [event objectForField:@<span class="hljs-string">"place"</span>];
+} failure:^(<span class="hljs-built_in">NSError</span>* error) {
+    <span class="hljs-comment">// something went wrong</span>
+}];
+</code></pre>
+<p>You can also make joins in the &quot;to many&quot; side of a relationship. In that case you can fetch a number of objects in the relationship and you can always get the total number of objects in the relationship.</p>
+<pre><code class="lang-objectivec">BBQuery* query = [Backbeam queryForEntity:@<span class="hljs-string">"place"</span>];
+[query setQuery:@<span class="hljs-string">"join last 10 events"</span>];
+[query fetch:<span class="hljs-number">100</span> offset:<span class="hljs-number">0</span> success:^(<span class="hljs-built_in">NSArray</span>* objects, <span class="hljs-built_in">NSInteger</span> totalCount, <span class="hljs-built_in">BOOL</span> fromCache) {
+    BBObject *place = objects[<span class="hljs-number">0</span>]; <span class="hljs-comment">// pick a place (in real code check the array.count attribute first)</span>
+    BBJoinResult *join = [event joinResultForField:@<span class="hljs-string">"events"</span>];
+
+    <span class="hljs-built_in">NSArray</span> *events = join<span class="hljs-variable">.objects</span>; <span class="hljs-comment">// this is an array of BBObjects with the joined events</span>
+    <span class="hljs-built_in">NSInteger</span> count = join<span class="hljs-variable">.count</span>; <span class="hljs-comment">// this is the total count of objects in the relationship</span>
+} failure:^(<span class="hljs-built_in">NSError</span>* error) {
+    <span class="hljs-comment">// something went wrong</span>
+}];
+</code></pre>
+<p>If you are only interested in the number of objects in a relationship you can just query using for example join events. Check the (BQL documentation)[overview-query-language.md] for further information.</p>
+<h2 id="users-authentication">Users authentication</h2>
+<p>One of the functionalities of the SDK is to remember the authenticated user between sessions of the application. You can always access the current authenticated user using <code>[Backbeam currentUser]</code> and you can logout the user by calling <code>[Backbeam logout]</code>. In further sections you will see how to authenticate your user, but these methods apply to all of the authentication mechanisms.</p>
+<p>If the user has been authenticated using an external provider (Twitter, Facebook, etc.) you can access information of that user from the external identity providers by using some of these methods:</p>
+<pre><code class="lang-objectivec">- (<span class="hljs-built_in">NSString</span>*)facebookData:(<span class="hljs-built_in">NSString</span>*)key;
+- (<span class="hljs-built_in">NSString</span>*)twitterData:(<span class="hljs-built_in">NSString</span>*)key;
+- (<span class="hljs-built_in">NSString</span>*)googlePlusData:(<span class="hljs-built_in">NSString</span>*)key;
+- (<span class="hljs-built_in">NSString</span>*)linkedInData:(<span class="hljs-built_in">NSString</span>*)key;
+- (<span class="hljs-built_in">NSString</span>*)gitHubData:(<span class="hljs-built_in">NSString</span>*)key;
+</code></pre>
+<p>For example you can access the id, name or link of a user authenticated with Facebook. If the user has been signed up with Twitter you can access the id, name, screen_name or image and finally if a user has been signed up with Google+ you can access the id, name or image properties.</p>
+<p>Users can have multiple authentication mechanisms. If a user is already authenticated and you authenticate it agaist Twitter, Facebook or Google+ authentication then the user is linked to these new providers. No new account is created, the already existing user is liked to those providers. If that&#39;s not the behaviour you are expecting just call <code>[Backbeam logout]</code> first.</p>
+<h2 id="where-to-go-next">Where to go next</h2>
+<p>If you are using client-side business logic then you should learn: <a href="ios-data.html">how to mamipulate data</a>, <a href="ios-authentication.html">users authentication</a>, and <a href="ios-push-notifications.html">push notifications</a>.</p>
+<p>If you think that server-side logic is better for your needs then you should learn <a href="ios-server-side-logic.html">how to invoke the server-side logic from your iOS code</a>.</p>
 
                     
                     </section>
@@ -504,10 +601,10 @@
         </div>
 
         
-        <a href="./overview-features.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        <a href="./ios-sdk.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="./overview-control-panel.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
+        <a href="./ios-data.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
