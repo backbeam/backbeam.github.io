@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.1" data-basepath="." data-revision="1399661611168">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.1" data-basepath="." data-revision="1399664047867">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,62 @@
                     <section class="normal" id="section-gitbook_17">
                     
                         <h1 id="manipulating-data">Manipulating data</h1>
+<h2 id="queries">Queries</h2>
+<p>To create a query use <code>select()</code>. You must pass the entity identifier:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> events_query = client.select(<span class="hljs-string">'event'</span>)
+</code></pre>
+<p>Optionally you can use BQL queries. The first argument is the BQL query and the second parameter is optional. It can be a single value, an array of values or just multiple arguments</p>
+<pre><code class="lang-javascript">events_query.query(<span class="hljs-string">'join place'</span>) <span class="hljs-comment">// BQL without parameters</span>
+events_query.query(<span class="hljs-string">'where type=?'</span>, <span class="hljs-string">'conference'</span>) <span class="hljs-comment">// one parameter</span>
+events_query.query(<span class="hljs-string">'where type=? and start_date&gt;?'</span>, <span class="hljs-string">'conference'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()) <span class="hljs-comment">// multiple arguments</span>
+events_query.query(<span class="hljs-string">'where type=? and start_date&gt;?'</span>, [<span class="hljs-string">'conference'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()]) <span class="hljs-comment">// array</span>
+</code></pre>
+<p>Use <code>fetch()</code> to retrieve the results of the query. This method needs three arguments. The first is the limit of objects to be returned. The second is the offset, and the third argument is a callback function with three arguments. Callbacks always receive an error as the first parameter. This parameter is null if everything is ok. The second argument in this case is an array of objects (the result of the query). And finally you receive the total count of objects of the query (the total number of objects without pagination).</p>
+<pre><code class="lang-javascript">events_query.fetch(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, totalCount, fromCache)</span> {</span>
+  <span class="hljs-comment">// do something with these objects</span>
+})
+`
+</code></pre>
+<p><code>objects</code> is the array of results and <code>totalCount</code> is the total number of objects matching the query. For example there could be 1000 objects matching the query but since you requested a maximum of 10 objects the <code>objects</code> array has 10 objects and <code>totalCount</code> is equal to 1000.</p>
+<p>Query objects support chained method calls, so you can do everything in a single line:</p>
+<pre><code class="lang-javascript">backbeam.select(<span class="hljs-string">'event'</span>).query(<span class="hljs-string">'join place'</span>).fetch(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, totalCount, fromCache)</span> {</span>
+  <span class="hljs-comment">// do something</span>
+})
+</code></pre>
+<h2 id="collection-constraints">Collection constraints</h2>
+<p>There is a helper object to create collection constraints when using the in operator in a query.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> collection = backbeam.collection(someUser)
+          .addTwitter(someTwitterId)
+          .addFacebook(someFacebookId)
+          .addGooglePlus(someGooglePlusId)
+          .addEmail(<span class="hljs-string">'user@example.com'</span>)
+
+backbeam.select(<span class="hljs-string">'user'</span>).query(<span class="hljs-string">'where this in ?'</span>, collection)
+</code></pre>
+<p>The <code>backbeam.collection()</code> method accepts one or many objects or even an array of objects. You can also use identifiers (strings) directly. If you want to add constraints related to users you can add Twitter, Facebook, Google+, LinkedIn or GitHub identifiers or email addresses using the methods: addTwitter, addFacebook, addGooglePlus, addLinkedIn, addGitHub and addEmail that also support one or many strings of identifiers or an array of identifiers.</p>
+<h2 id="querying-and-refreshing-single-objects">Querying and refreshing single objects</h2>
+<p>It is easy to refresh the data of a given object. You just need to call the refresh method.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = backbeam.empty(<span class="hljs-string">'place'</span>, known_id)
+obj.refresh(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
+  <span class="hljs-comment">// here the object is populated with its values if no error ocurred</span>
+})
+</code></pre>
+<h2 id="creating-and-updating-objects">Creating and updating objects</h2>
+<p>You can create an empty object and then save it as follows:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = backbeam.empty(<span class="hljs-string">'place'</span>)
+obj.set(<span class="hljs-string">'some-field'</span>, some_value)
+obj.save(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
+  <span class="hljs-comment">// here the object has been created and you can access its id(), createdAt() and updatedAt() methods</span>
+})
+</code></pre>
+<h2 id="deleting-objects">Deleting objects</h2>
+<p>You can delete an object using the <code>remove()</code> method.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = ... <span class="hljs-comment">// some object from the database</span>
+obj.remove(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
+  <span class="hljs-comment">// object deleted if there were no errors</span>
+})
+</code></pre>
+<p>Do not confuse this mehtod with <code>rem(fieldName, object)</code>. The latter is used to remove an object from a relationship. We wanted to avoid the confusion using <code>delete</code> as name for the method to delete an object from the database, but <code>delete</code> is a keyword in JavaScript.</p>
 
                     
                     </section>

@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4" data-basepath="." data-revision="1399661611168">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4" data-basepath="." data-revision="1399664047867">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,124 @@
                     <section class="normal" id="section-gitbook_20">
                     
                         <h1 id="javascript-sdk">JavaScript SDK</h1>
+<p>This documentation is valid for both the server-side code (libs and controllers in a backbeam project) and for the backbeam.js SDK. The backbeam.js SDK is intented to be used in embedded mobile web applications (i.e. applications based on a webview embedded in a native application) or as a Node.js package. This JavaScript SDK has also been tested in Titanium Appcelerator.</p>
+<p>Do not include your API keys in any place that can be visible easily. If you are doing a hosted web application take a look at the <a href="https://backbeam.io/article/introducing-the-new-micro-javascript-sdk" target="_blank">micro JavaScript SDK</a>.</p>
+<p>The source code of this SDK is hosted in <a href="https://github.com/backbeam/backbeamjs" target="_blank">a repository in GitHub</a>.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>When using the JavaScript SDK inside a webview or a web browser a few functions need some libraries in order to do some cryptography. They are included in the git repository: hmac-sha1.js and enc-base64.js. Additionally if you want to use the cache mechanism in your queries you need to include the cache.js file.</p>
+<p>The node.js package is available using <a href="https://npmjs.org/package/backbeam" target="_blank">npm</a>. You can install it using <code>npm install backbeam</code>.</p>
+<p>The server-side code has no dependencies. You can use the backbeam object directly.</p>
+<h2 id="configure-your-application">Configure your application</h2>
+<p>This step is not needed for server-side code. It is also not required if you are using the micro-SDK</p>
+<pre><code class="lang-javascript">backbeam.configure({
+    project: <span class="hljs-string">'your-project-name'</span>, <span class="hljs-comment">// the subdomain of your project</span>
+    env: <span class="hljs-string">'dev'</span>, <span class="hljs-comment">// can be 'dev' or 'pro'</span>
+    protocol: <span class="hljs-string">'http'</span>, <span class="hljs-comment">// can be 'http' or 'https'</span>
+
+    <span class="hljs-comment">// The shared and secret keys are not needed if you only invoke controllers or use the real-time API</span>
+    shared: <span class="hljs-string">'your-shared-key'</span>,
+    secret: <span class="hljs-string">'your-secret-secret'</span>,
+
+    <span class="hljs-comment">// These are only needed if you invoke controllers</span>
+    webVersion: <span class="hljs-string">'v1'</span>, <span class="hljs-comment">// it's the web version you want to invoke</span>
+    httpAuth: <span class="hljs-string">'xxxx'</span>, <span class="hljs-comment">// it's the authorization password you will see in 'Views and controllers' in your control panel</span>
+})
+</code></pre>
+<h2 id="objects">Objects</h2>
+<p>Most of the time you will read and manipulate the data stored in the database using objects. You will receive objects when making queries and you will create and update objects to manipulate the data in the database. You will access its fields and some other metainformation. These are the most important methods in these objects:</p>
+<ul>
+<li><code>id()</code>. Returns a string containing the unique object identifier</li>
+<li><code>createdAt()</code>. Returns a Date object indicating when the user was created</li>
+<li><code>updatedAt()</code>. Returns a Date object indicating when the user was updated for the last time</li>
+<li><code>get(field)</code>. Returns the value of the given field</li>
+<li><code>set(field, val)</code>. Sets the value of the given field. The new value is not synched with the backend until you perform a <code>save()</code> operation</li>
+<li><code>add(field, obj)</code>. Adds an object to a relationship. For example you could do event.add(&#39;attendees&#39;, user) if you have an &#39;event&#39; entitity with a relationship &#39;to many&#39; called &#39;attendees&#39;. The relationship is synched when you perform a <code>save()</code> operation</li>
+<li><code>rem(field, obj)</code>. The opposite of the add() method.</li>
+</ul>
+<h2 id="join-results">Join results</h2>
+<p>Many times you will perform joins in your BQL queries and other operations. If the join is made in a relationship &quot;to one&quot; you can just use <code>object.get(&#39;fieldName&#39;)</code> to get the value of the relationship. Let&#39;s see an example of a BQL query with a join &quot;to one&quot; (you will learn more about queries in the next section):</p>
+<pre><code class="lang-javascript">backbeam.select(<span class="hljs-string">'event'</span>).query(<span class="hljs-string">'join place'</span>).fetch(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, totalCount, fromCache)</span> {</span>
+    <span class="hljs-keyword">var</span> event = objects[<span class="hljs-number">0</span>] <span class="hljs-comment">// pick an event (in real code check the error and the array length)</span>
+    <span class="hljs-keyword">var</span> place = event.get(<span class="hljs-string">'place'</span>) <span class="hljs-comment">// here you have the joined object</span>
+})
+</code></pre>
+<p>You can also make joins in the &quot;to many&quot; side of a relationship. In that case you can fetch a number of objects in the relationship and you always can get the total number of objects in the relationship.</p>
+<pre><code class="lang-javascript">backbeam.select(<span class="hljs-string">'place'</span>).query(<span class="hljs-string">'join last 10 events'</span>).fetch(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, totalCount, fromCache)</span> {</span>
+    <span class="hljs-keyword">var</span> place = objects[<span class="hljs-number">0</span>] <span class="hljs-comment">// pick a place (in real code check the error and the array length)</span>
+    <span class="hljs-keyword">var</span> join = place.get(<span class="hljs-string">'events'</span>) <span class="hljs-comment">// here you have a special object with two attributes</span>
+
+    <span class="hljs-keyword">var</span> events = join.result <span class="hljs-comment">// this is an array of `event` objects</span>
+    <span class="hljs-keyword">var</span> count = join.count <span class="hljs-comment">// total count of objects in the relationship</span>
+
+    <span class="hljs-comment">// For example you can iterate the joined objects of the picked place</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;events.length; i++) {
+        <span class="hljs-keyword">var</span> event = events[i]
+        <span class="hljs-keyword">var</span> name = event.get(<span class="hljs-string">'name'</span>)
+        <span class="hljs-comment">// ...</span>
+    }
+})
+</code></pre>
+<p>If you are only interested in the number of objects in a relationship you can just query using for example join events. Check the BQL documentation for further information.</p>
+<h2 id="special-objects">Special objects</h2>
+<p>There are a couple of special objects. When using fields of type location, their values are encapsulated in objects of type backbeam.Location. This object has the following attributes:</p>
+<ul>
+<li><code>addr</code> The human readable address (can contain the country, street,...)</li>
+<li><code>lat</code> The latitude</li>
+<li><code>lon</code> The longitude</li>
+<li><code>alt</code> The altitude. Always optional</li>
+</ul>
+<p>You can create a location object like this:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">new</span> backbeam.Location(<span class="hljs-string">'Barcelona'</span>, <span class="hljs-number">41.403611</span>, <span class="hljs-number">2.174444</span>) <span class="hljs-comment">// you can add an optional last parameter for the altitude</span>
+</code></pre>
+<p>For fields of type day there is also a special object type: <code>backbeam.Day</code>. This object is timezone-agnostic. That&#39;s why the native <code>Date</code> object is not used for day fields. There are multiple ways to create a backbeam.Day object</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> today = <span class="hljs-keyword">new</span> backbeam.Day()
+<span class="hljs-keyword">var</span> dayFromDate = <span class="hljs-keyword">new</span> backbeam.Day(someJSDateObject) <span class="hljs-comment">// uses Date.getFullYear(), Date.getMonth()+1 and Date.getDate() internally</span>
+<span class="hljs-keyword">var</span> otherDay = <span class="hljs-keyword">new</span> backbeam.Day(<span class="hljs-number">2013</span>, <span class="hljs-number">8</span>, <span class="hljs-number">31</span>)
+</code></pre>
+<p>A backbeam.Day has the following attributes:</p>
+<ul>
+<li><code>year</code> The year</li>
+<li><code>month</code> The month (Jaunuary == 1)</li>
+<li><code>day</code> The day of the month</li>
+</ul>
+<h2 id="users-authentication">Users authentication</h2>
+<p>One of the functionalities of the SDK is to remember the authenticated user between sessions of the application. You can always access the current authenticated user using <code>backbeam.currentUser()</code> and you can logout the user by calling <code>backbeam.logout()</code>. In further sections you will see how to authenticate your user, but these methods apply to all of the authentication mechanisms.</p>
+<p>If the user has been authenticated using an external provider (Twitter, Facebook, etc.) you can access information of that user from the external identity providers by using some of these methods:</p>
+<ul>
+<li>user.getTwitterData(key)</li>
+<li>user.getFacebookData(key)</li>
+<li>user.getGooglePlusData(key)</li>
+<li>user.getLinkedInData(key)</li>
+<li>user.getGitHubData(key)</li>
+</ul>
+<p>For example you can access the id, name or link of a user authenticated with Facebook. If the user has been signed up with Twitter you can access the id, name, screen_name or image and finally if a user has been signed up with Google+ you can access the id, name or image properties.</p>
+<p>Users can have multiple authentication mechanisms. If a user is already authenticated and you authenticate it agaist Twitter, Facebook or Google+ authentication then the user is linked to these new providers. No new account is created, the already existing user is liked to those providers. If that&#39;s not the behaviour you are expecting just call <code>backbeam.logout()</code> first.</p>
+<h2 id="caching">Caching</h2>
+<p>Queries and controllers invocations can be cached. In order to use this caching mechanism you need to call the policy method in the query object:</p>
+<pre><code class="lang-javascript">backbeam.select(<span class="hljs-string">'event'</span>).query(<span class="hljs-string">'join place'</span>).policy(<span class="hljs-string">'local or remote'</span>).fetch(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, totalCount, fromCache)</span> {</span>
+  <span class="hljs-comment">// do something</span>
+})
+</code></pre>
+<p>The possible cache policies are:</p>
+<ul>
+<li><code>&quot;local&quot;</code>
+The query result is read from the cache. If no value is present an error is passed to the callback function
+remote
+The cache is not read. The result is fetched only from the remote server</li>
+<li><code>&quot;local and remote&quot;</code>
+The query result is read from the cache. Then the result is fetched from the remote server. If the value is not present in the cache, the callback function is only called once. If a value is found in the cache the callback function will be called twice.</li>
+<li><code>&quot;local or remote&quot;</code>
+The query result is read from the cache. If a value is found the callback function is called and the remote server is not called. If there is not a cached result the server is called and the callback function is called once.</li>
+</ul>
+<p>You can always know if a value has been fetched from the cache or not using the fourth parameter of the callback that is a boolean value whose value will be true if the value was read from the cache.</p>
+<p>In order to use the cache mechanism you need to configure it in the configure method:</p>
+<pre><code class="lang-javascript">backbeam.configure({ ..., cache: { type: <span class="hljs-string">'default'</span> }}
+</code></pre>
+<p>At this moment there are two builtin cache implementations. You can use default to use an in-memory cache. You can set the cache type to <code>&quot;localStorage&quot;</code> to use a cache implementation that uses the web browser&#39;s local storage (supported in most browsers).</p>
+<p>You can configure your own cache implementation using:</p>
+<pre><code class="lang-javascript">{ type: <span class="hljs-string">'customStorage'</span>, impl: <span class="hljs-keyword">new</span> MyCacheImpl()}
+</code></pre>
+<p>Where <code>impl</code> is an object with the same API than the <code>JSCache</code> library.</p>
 
                     
                     </section>

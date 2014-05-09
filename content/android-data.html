@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
         
         <meta charset="UTF-8">
-        <title>Server side logic | Backbeam documentation</title>
+        <title>Manipulating data | Backbeam documentation</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="./javascript-push-notifications.html" />
+        <link rel="next" href="./android-authentication.html" />
         
         
-        <link rel="prev" href="./javascript-authentication.html" />
+        <link rel="prev" href="./android-objects.html" />
         
 
-        <meta property="og:title" content="Server side logic | Backbeam documentation">
+        <meta property="og:title" content="Manipulating data | Backbeam documentation">
         <meta property="og:site_name" content="Backbeam documentation">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.3" data-basepath="." data-revision="1399661611168">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.2" data-basepath="." data-revision="1399664047867">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -108,7 +108,7 @@
 
         
         <li>
-            <a href="https://github.com/backbeam/backbeam.github.io/edit/master/javascript-server-side-logic.md" target="blank">Edit and Contribute</a>
+            <a href="https://github.com/backbeam/backbeam.github.io/edit/master/android-data.md" target="blank">Edit and Contribute</a>
         </li>
         
 
@@ -449,7 +449,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 75%;min-width: 72.22222222222223%;"></div>
+        <div class="inner" style="width: 52.77777777777778%;min-width: 50%;"></div>
     </div>
     <div class="chapters">
     
@@ -493,21 +493,21 @@
     
         <a href="./android-data.html" title="Manipulating data" class="chapter done " data-progress="3.2" style="left: 52.77777777777778%;"></a>
     
-        <a href="./android-authentication.html" title="Users authentication" class="chapter done " data-progress="3.3" style="left: 55.55555555555556%;"></a>
+        <a href="./android-authentication.html" title="Users authentication" class="chapter  " data-progress="3.3" style="left: 55.55555555555556%;"></a>
     
-        <a href="./android-server-side-logic.html" title="Server side logic" class="chapter done " data-progress="3.4" style="left: 58.333333333333336%;"></a>
+        <a href="./android-server-side-logic.html" title="Server side logic" class="chapter  " data-progress="3.4" style="left: 58.333333333333336%;"></a>
     
-        <a href="./android-push-notifications.html" title="Push notifications" class="chapter done " data-progress="3.5" style="left: 61.111111111111114%;"></a>
+        <a href="./android-push-notifications.html" title="Push notifications" class="chapter  " data-progress="3.5" style="left: 61.111111111111114%;"></a>
     
-        <a href="./android-realtime.html" title="Realtime" class="chapter done " data-progress="3.6" style="left: 63.888888888888886%;"></a>
+        <a href="./android-realtime.html" title="Realtime" class="chapter  " data-progress="3.6" style="left: 63.888888888888886%;"></a>
     
-        <a href="./javascript-sdk.html" title="JavaScript SDK" class="chapter done new-chapter" data-progress="4" style="left: 66.66666666666667%;"></a>
+        <a href="./javascript-sdk.html" title="JavaScript SDK" class="chapter  new-chapter" data-progress="4" style="left: 66.66666666666667%;"></a>
     
-        <a href="./javascript-data.html" title="Manipulating data" class="chapter done " data-progress="4.1" style="left: 69.44444444444444%;"></a>
+        <a href="./javascript-data.html" title="Manipulating data" class="chapter  " data-progress="4.1" style="left: 69.44444444444444%;"></a>
     
-        <a href="./javascript-authentication.html" title="Users authentication" class="chapter done " data-progress="4.2" style="left: 72.22222222222223%;"></a>
+        <a href="./javascript-authentication.html" title="Users authentication" class="chapter  " data-progress="4.2" style="left: 72.22222222222223%;"></a>
     
-        <a href="./javascript-server-side-logic.html" title="Server side logic" class="chapter done " data-progress="4.3" style="left: 75%;"></a>
+        <a href="./javascript-server-side-logic.html" title="Server side logic" class="chapter  " data-progress="4.3" style="left: 75%;"></a>
     
         <a href="./javascript-push-notifications.html" title="Push notifications" class="chapter  " data-progress="4.4" style="left: 77.77777777777777%;"></a>
     
@@ -532,9 +532,212 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_21">
+                    <section class="normal" id="section-gitbook_3">
                     
-                        <h1 id="server-side-logic">Server side logic</h1>
+                        <h1 id="manipulating-data">Manipulating data</h1>
+<p>This documentation is about manipulating data from your Android code. This requires you to create a pair of API keys and configure them in your main activity. If you want to user server-side logic you should go to the <a href="android-server-side-logic.html">Server-side logic</a> section of the documentation.</p>
+<h2 id="making-queries">Making queries</h2>
+<p>You make queries using <code>Query</code> objects. You create them using the <code>Backbeam.select()</code> method passing the entity identifier. It is optional to set a BQL query using <code>setQuery()</code>. Then you fetch the results calling <code>fetch()</code> with three arguments:</p>
+<ul>
+<li><code>limit</code> The maximum number of elements to fetch</li>
+<li><code>offset</code> The offset of the query</li>
+<li><code>callback</code> The callback handler to handle the query result</li>
+</ul>
+<p>The <code>setQuery()</code> method receives a Stirng containing a BQL query. If the BQL query needs parameters you pass them to the method just separating them with commas.</p>
+<pre><code class="lang-java">q.setQuery(<span class="hljs-string">"where name like ? and score &gt; ?"</span>, <span class="hljs-string">"awesome"</span>, <span class="hljs-number">100</span>);
+</code></pre>
+<p>All operations that need to send or receive information fromt the server are handled asynchronously. If the operation receives information you provide a callback. Since Java doesn&#39;t support closures yet, you normally will pass an object of an anonymous class created inline. These callbacks usually have a <code>success()</code> method that you must implement and optionally you can override a <code>failure()</code> method.</p>
+<pre><code class="lang-java">Backbeam.select(<span class="hljs-string">"place"</span>).setQuery(<span class="hljs-string">"sort by created_at"</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> FetchCallback() {
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;BackbeamObject&gt; objects, <span class="hljs-keyword">int</span> totalCount, <span class="hljs-keyword">boolean</span> fromCache) {
+    <span class="hljs-keyword">for</span> (BackbeamObject object : objects) {
+      <span class="hljs-comment">// Do something with this object</span>
+      System.out.println(<span class="hljs-string">"object "</span>+object.getString(<span class="hljs-string">"name"</span>));
+    }
+  }
+});
+</code></pre>
+<p>In this case the <code>success()</code> method receives three arguments</p>
+<ul>
+<li>objects The list of objects returned by the query</li>
+<li>totalCount The total number of objects that this query could return</li>
+<li>fromCache Indicates whether the result was fetched from the cache or not</li>
+</ul>
+<p>Queries can be cached in different ways. Before fetching the result of a query you can set the query fetch policy calling the <code>setFetchPolicy()</code> method. There are a few fetch policies available:</p>
+<ul>
+<li>REMOTE_ONLY This is the default policy. The cache is ignored and the operation is performed against the server</li>
+<li>LOCAL_ONLY The result is fetched from cache if available. If not available the failure() method is called</li>
+<li>LOCAL_AND_REMOTE The result is fetched from cache if available. Then the query fetches the result from the server. So in this case the method success() might be called twice.</li>
+<li>LOCAL_OR_REMOTE The result is fetched from cache if available. If not available the result is fetched from the server.</li>
+</ul>
+<p>No matter what policy you use either <code>success()</code> or <code>failure()</code> are guaranteed to be called at least once.</p>
+<h2 id="removing-objects-matching-a-query">Removing objects matching a query</h2>
+<p>If you need to remove several objects at once and they share common constraints you can create a query and then call one of these methods... You can remove a limited number of objects:</p>
+<pre><code class="lang-java">Query query = Backbeam.select(<span class="hljs-string">"some-entity"</span>).setQuery(...);
+query.remove(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> RemoveCallback() {
+
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(<span class="hljs-keyword">int</span> removed) {
+    <span class="hljs-comment">// Here the first 10 objects matching the query have been removed</span>
+  }
+
+});
+</code></pre>
+<p>Or you can remove all objects matching the query</p>
+<pre><code class="lang-java">Query query = Backbeam.select(<span class="hljs-string">"some-entity"</span>).setQuery(...);
+query.removeAll(<span class="hljs-keyword">new</span> RemoveCallback() {
+
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(<span class="hljs-keyword">int</span> removed) {
+    <span class="hljs-comment">// Here the objects have been removed. You can get the number of removed objects</span>
+  }
+
+});
+`
+</code></pre>
+<h2 id="collection-constraints">Collection constraints</h2>
+<p>There is a helper object to create collection constraints when using the in operator in a query.</p>
+<pre><code class="lang-java">CollectionConstraint collection = <span class="hljs-keyword">new</span> CollectionConstraint();
+collection.addTwitterIdentifier(someTwitterIdentifier);
+collection.addObject(<span class="hljs-keyword">new</span> BackbeamObject(<span class="hljs-string">"user"</span>, someBackbeamIdentifier));
+collection.addEmailAddress(<span class="hljs-string">"user@example.com"</span>);
+
+Query query = <span class="hljs-keyword">new</span> Query(<span class="hljs-string">"user"</span>);
+query.setQuery(<span class="hljs-string">"where this in ?"</span>, collection);
+query.fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> FetchCallback() {
+
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List objects, <span class="hljs-keyword">int</span> totalCount,
+      <span class="hljs-keyword">boolean</span> fromCache) {
+
+    System.out.println(<span class="hljs-string">"objects: "</span>+objects.size());
+  }
+});
+</code></pre>
+<p>As you can see in the collection constraint you can use Backbeam objects. This applies to any entity in your data model. If you are querying users you can also use Twitter, Facebook, Google+, LinkedIn or Twitter identifiers as well as email addresses.</p>
+<h2 id="creating-or-updating-objects">Creating or updating objects</h2>
+<p>To create or update objects you use the save()method. To create a new object first you need to instantiate an empty object passing the entity name to which this object will be a member of.</p>
+<pre><code class="lang-java">BackbeamObject obj = <span class="hljs-keyword">new</span> BackbeamObject(<span class="hljs-string">"place"</span>);
+obj.setString(<span class="hljs-string">"name"</span>, <span class="hljs-string">"A new place"</span>);
+obj.save(<span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        System.out.println(<span class="hljs-string">"created! :) "</span>+object.getId());
+    }
+});
+</code></pre>
+<ul>
+<li><code>setString(String fieldName, String value)</code> Sets the value of a text field</li>
+<li><code>setDate(String fieldName, Date value)</code> Sets the value of a date field</li>
+<li><code>setNumber(String fieldName, Number value)</code> Sets the value of a numeric field</li>
+<li><code>incrementNumber(String fieldName, int value)</code> Increments the value of a numeric field</li>
+<li><code>setLocation(String fieldName, Location value)</code> Sets the value of a &quot;location&quot; field</li>
+<li><code>setBoolean(String fieldName, boolean value)</code> Sets the value of a boolean field</li>
+<li><code>setDay(String fieldName, GregorianCalendar value)</code> Sets the value of a &quot;day&quot; field. You can pass a Gregorian calendar. You can also pass a java.util.Date and the current calendar&#39;s timezone will be used to calculate the year, month and day.</li>
+<li><code>setObject(String fieldName, BackbeamObject value)</code> Sets the value of a relationship &quot;to-one&quot;</li>
+</ul>
+<p>If you want to update an object of which you know the identifier but you don&#39;t have an instance of it you can pass the identifier to the <code>BackbeamObject</code> constructor</p>
+<p>When an object is created or updated the server saves the changes you made and sends you any other change that could been made to that object. So inside the <code>success()</code> method the object is fully synchronized.</p>
+<pre><code class="lang-java">BackbeamObject obj = <span class="hljs-keyword">new</span> BackbeamObject(<span class="hljs-string">"place"</span>, identifierYourAlreadyKnow);
+obj.setString(<span class="hljs-string">"name"</span>, <span class="hljs-string">"A new name for that palce"</span>);
+obj.save(<span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        <span class="hljs-comment">// here you can access any field of 'object'</span>
+    }
+});
+</code></pre>
+<p>To add or remove objects of a relationship &quot;to-many&quot; you will use the methods <code>removeObject(String fieldName, BackbeamObject object)</code> and <code>addObject(String fieldName, BackbeamObject object)</code>. For example:</p>
+<pre><code class="lang-java">BackbeamObject user = ...;
+user.addObject(<span class="hljs-string">"friends"</span>, myNewFriend);
+user.removeObject(<span class="hljs-string">"friends"</span>, userThatIsNoLongerMyFriend);
+user.save(<span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        <span class="hljs-comment">// ...</span>
+    }
+});
+</code></pre>
+<h2 id="reading-and-refreshing-objects">Reading and refreshing objects</h2>
+<p>If you have an object instance and you need to fill it with the latest changes on the server without making you new changes then you use the refresh() method.</p>
+<pre><code class="lang-java">BackbeamObject obj = someObjectYouAlreadyHaveInstantiated;
+obj.refresh(<span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        <span class="hljs-comment">// here you can access any field of 'object'</span>
+    }
+});
+</code></pre>
+<p>The <code>refresh()</code> method is overloaded and accepts an optional first parameter that is part of a BQL query. In this parameter you can specify to join some relationships while synchronizating the state of this object.</p>
+<pre><code class="lang-java">BackbeamObject obj = someObjectYouAlreadyHaveInstantiated;
+obj.refresh(<span class="hljs-string">"join some-relationship"</span>, <span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        <span class="hljs-comment">// here you can access any field. You can also access the joined relationship</span>
+        JoinResult result = object.getJoinResult(<span class="hljs-string">"some-relationship"</span>)
+    }
+});
+</code></pre>
+<p>If you need to read an object of which you know its identifier and you don&#39;t already instantiated it then you can use <code>Backbeam.read()</code>.</p>
+<pre><code class="lang-java">Backbeam.read(<span class="hljs-string">"place"</span>, id, <span class="hljs-keyword">new</span> ObjectCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        <span class="hljs-comment">// ...</span>
+    }
+});
+</code></pre>
+<p>The first argument is the entity identifier, the second is the unique identifier of that object and finally you pass the callback that will be called when the operation is complete. You can optionally pass a parameter that is part of a BQL query to join some relationships.</p>
+<h2 id="working-with-files">Working with files</h2>
+<p>There is a special kind of entity that lets you hold files. It is the File entity. The entity itself holds information about the type of file, size, etc. If you need the download the content of the file you need to generate a URL. There is a special method called <code>composeFileURL</code> to which you can pass parameters. For example if you want to download an image you can transform it indicating a width and/or height. You can also pass <code>null</code> to this method.</p>
+<pre><code class="lang-java">TreeMap&lt;String, Object&gt; options = <span class="hljs-keyword">new</span> TreeMap&lt;String, Object&gt;();
+options.put(<span class="hljs-string">"width"</span>, <span class="hljs-number">40</span>);
+options.put(<span class="hljs-string">"height"</span>, <span class="hljs-number">40</span>);
+String url = fileObject.composeFileURL(options);
+`
+</code></pre>
+<p>Note that the file object should have their properties loaded. Specially <code>File</code> objects have a <code>version</code> field that is required to generate the URL. This field changes everytime the file content changes. This way the URL changes everytime the content changes and there are no problems with any cache. In summary, be sure that the file has its version field loaded. You can&#39;t do a refresh if it is not loaded. And if the file object is the result of a query be sure to use a join on the relationship. See this example:</p>
+<pre><code class="lang-java">Backbeam.select(<span class="hljs-string">"company"</span>).setQuery(<span class="hljs-string">"join logo"</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> FetchCallback() {
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;BackbeamObject&gt; companies, <span class="hljs-keyword">int</span> totalCount, <span class="hljs-keyword">boolean</span> fromCache) {
+    <span class="hljs-keyword">for</span> (BackbeamObject company : companies) {
+      BackbeamObject logo = company.getObject(<span class="hljs-string">"logo"</span>);
+      String logoURL = logo.composeFileURL(<span class="hljs-keyword">null</span>);
+      <span class="hljs-comment">// Do something with logoURL</span>
+    }
+  }
+});
+</code></pre>
+<p>For images it is recommended to use an external library such as <a href="https://github.com/nostra13/Android-Universal-Image-Loader" target="_blank">Android Universal Image Loader</a> to handle images efficiently.</p>
+<h2 id="geoqueries">Geoqueries</h2>
+<p>You can perform geoqueries on entities having at least one field whose type is set to location. There are two types of geolocated queries: you can query the closest objects to a given point or you can query the objects inside a bounding box.</p>
+<h3 id="fetching-the-closest-objects-to-a-location">Fetching the closest objects to a location</h3>
+<p>To query objects near to a given location you need to tell the SDK the name of the field whose type is location, the coordinates of the point (latitude + longitude), and the maximum number of results you want to fetch. The success block is very similar to a regular success query block but it returns additionally the distances of the objects to the location used to query the data. The distances are measured in meters.</p>
+<pre><code class="lang-java">Query query = <span class="hljs-keyword">new</span> Query(<span class="hljs-string">"place"</span>);
+query.near(<span class="hljs-string">"location"</span>, <span class="hljs-number">41.641113</span>, -<span class="hljs-number">0.895115</span>, <span class="hljs-number">10</span>, <span class="hljs-keyword">new</span> NearFetchCallback() {
+
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;BackbeamObject&gt; objects, <span class="hljs-keyword">int</span> totalCount,
+      List&lt;Integer&gt; distances, <span class="hljs-keyword">boolean</span> fromCache) {
+
+    <span class="hljs-comment">// Success</span>
+
+  }
+});
+</code></pre>
+<h3 id="fetching-objects-in-a-bounding-box">Fetching objects in a bounding box</h3>
+<p>To query objects inside a bounding box you need to tell the SDK the name of the field whose type is location, the south-west and north-east coordinates of the corners of the bounding box, and the maximum number of results you want to fetch. The success block is exactly the same to any regular success query block.</p>
+<pre><code class="lang-java">Query query = <span class="hljs-keyword">new</span> Query(<span class="hljs-string">"place"</span>);
+query.bounding(<span class="hljs-string">"location"</span>, <span class="hljs-number">41.641113</span>, -<span class="hljs-number">0.902896</span>, <span class="hljs-number">41.645883</span>, -<span class="hljs-number">0.895115</span>, <span class="hljs-number">10</span>, <span class="hljs-keyword">new</span> FetchCallback() {
+
+  <span class="hljs-annotation">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;BackbeamObject&gt; objects, <span class="hljs-keyword">int</span> totalCount,
+      <span class="hljs-keyword">boolean</span> fromCache) {
+
+    <span class="hljs-comment">// Success</span>
+
+  }
+});
+</code></pre>
 
                     
                     </section>
@@ -544,10 +747,10 @@
         </div>
 
         
-        <a href="./javascript-authentication.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        <a href="./android-objects.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="./javascript-push-notifications.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
+        <a href="./android-authentication.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

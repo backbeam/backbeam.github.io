@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.2" data-basepath="." data-revision="1399661611168">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.2" data-basepath="." data-revision="1399664047867">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,75 @@
                     <section class="normal" id="section-gitbook_2">
                     
                         <h1 id="users-authentication">Users authentication</h1>
+<h2 id="session-storage">Session storage</h2>
+<p>When you perform authentication functionality you can access the current authenticated user with var user = <code>backbeam.currentUser()</code>. When you are developing a web page the user session is stored in a cookie. If you are using the SDK in the client-side (i.e an embedded mobile application) then by default the SDK only remembers the current authenticated user saving the object in memory. But you can also use a persistent session storage. You just need to pass an optional parameter to the backbeam.configure method and implement two functions. This is an example of how to implement a basic file-based session persistence in Nodejs:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> sessFile = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>).join(__dirname, <span class="hljs-string">'session-data'</span>)
+backbeam.configure({…,
+  sessionStore: {
+    store: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sessionData)</span> {</span>
+      <span class="hljs-keyword">if</span> (sessionData) { <span class="hljs-comment">// sessionData is just a string. If it is null it is due a logout</span>
+        fs.writeFileSync(sessFile, sessionData, <span class="hljs-string">'utf8'</span>)
+      } <span class="hljs-keyword">else</span> {
+        fs.unlinkSync(sessFile)
+      }
+    },
+    restore: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">return</span> fs.readFileSync(sessFile, <span class="hljs-string">'utf8'</span>)
+      } <span class="hljs-keyword">catch</span>(e) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+      }
+    }
+  }
+})
+</code></pre>
+<h2 id="email-password-based-authentication">Email + password based authentication</h2>
+<p>For a simple signup using email+password you just need to create a user object and save it with its email and password fields setted. You of course can set more fields.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> object = backbeam.empty(<span class="hljs-string">'user'</span>)
+object.set(<span class="hljs-string">'email'</span>, <span class="hljs-string">'some_user@example.com'</span>)
+object.set(<span class="hljs-string">'password'</span>, <span class="hljs-string">'some_strong_password'</span>)
+object.save(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
+  <span class="hljs-comment">// here the user has been created</span>
+  <span class="hljs-keyword">var</span> user = backbeam.currentUser()
+  <span class="hljs-comment">// if user != null both 'user' and 'object' are the same object</span>
+})
+</code></pre>
+<p>Depending on your project settings the user is registered and can logged or just registered waiting to activate their email address. If <code>backbeam.currentUser()</code> does not return null the user is both registered and logged in the application.</p>
+<p><code>backbeam.currentUser()</code> is persistent in server-side code. The current user is stored in a cookie and you can access it in any controller. You can logout the user by calling <code>backbeam.logout()</code>.</p>
+<p>When you want to authenticate an already registered user using email+password authentication you just need to use <code>backbeam.login()</code> as follows</p>
+<pre><code class="lang-javascript">backbeam.login(<span class="hljs-string">'some_user@example.com'</span>, <span class="hljs-string">'some_strong_password'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error, user)</span> {</span>
+  <span class="hljs-comment">// if there is no error you can access the users information</span>
+})
+</code></pre>
+<p>For server-side code once the user has been authenticated you can access the <code>backbeam.currentUser()</code> at anytime in any controlller until you call <code>backbeam.logout()</code> or the cookie expires.</p>
+<h2 id="third-party-authentication">Third-party authentication</h2>
+<p>You can authenticate your users using Twitter, Facebook, Google+, LinkedIn and GitHub. First of all you need to configure your project: go to the &#39;Users authentication&#39; in your control panel and configure the Twitter and Facebook parameters.</p>
+<p>In the JavaScript SDK you get authorization of your users and then you send to Backbeam their credentials. For Twitter the credentials consist on the <code>oauth_token</code> and <code>oath_token_secret</code> generated in the OAuth authorization process.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> credentials = { oauth_token:<span class="hljs-string">'the oauth token'</span>, oauth_token_secret:<span class="hljs-string">'the oauth token secret'</span> }
+backbeam.twitterSignup(credentials, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, user, isNew)</span> {</span>
+  <span class="hljs-comment">// Here you get the 'user' object if everything went ok</span>
+  <span class="hljs-comment">// The 'isNew' boolean indicates whether the user is new or is a returning user</span>
+})
+</code></pre>
+<p>When developing web applications backbeam provides some helper methods for the Twitter authentication. Read <a href="http://backbeam.io/article/signup-users-using-twitter-in-your-web-application" target="_blank">how to signup users using Twitter in your web application</a>.</p>
+<p>When using Facebook as authentication mechanism you will get an <code>access_token</code> and then you can signup the user into your project using:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> credentials = { access_token:<span class="hljs-string">'the acccess token'</span> }
+backbeam.facebookSignup(credentials, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, user, isNew)</span> {</span>
+  <span class="hljs-comment">// Here you get the 'user' object if everything went ok</span>
+  <span class="hljs-comment">// The 'isNew' boolean indicates whether the user is new or is a returning user</span>
+})
+</code></pre>
+<p>If you want to sign up a user from a web application using Facebook you can use the documented <a href="https://developers.facebook.com/docs/facebook-login/login-flow-for-web-no-jssdk/" target="_blank">Login flow in the Facebook documentation</a>.</p>
+<p>The process for Google+, LinkedIn and GitHub are very similar:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> credentials = { access_token:<span class="hljs-string">'the acccess token'</span> }
+backbeam.googlePlusSignup(credentials, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, user, isNew)</span> {</span>
+  <span class="hljs-comment">// Here you get the 'user' object if everything went ok</span>
+  <span class="hljs-comment">// The 'isNew' boolean indicates whether the user is new or is a returning user</span>
+})
+</code></pre>
+<p>For Google+ be sure to have enabled the Google+ API service in your project in the Google APIs console or the signup will fail.</p>
+<p>For LinkedIn you need to use the linkedInSignup method and pass an object with an <code>access_token</code> field. You will need to create first a <a href="https://www.linkedin.com/secure/developer" target="_blank">LinkedIn app</a> and use some implementation of the OAuth2 protocol to get the access_token.</p>
+<p>For GitHub you need to use the gitHubSignup method and pass an object with an <code>access_token</code> field. You will need to register a <a href="https://github.com/settings/applications" target="_blank">GitHub application</a> and use some implementation of the OAuth2 protocol to get the access_token.</p>
 
                     
                     </section>

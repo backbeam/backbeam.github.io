@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.4" data-basepath="." data-revision="1399661611168">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.4" data-basepath="." data-revision="1399664047867">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,62 @@
                     <section class="normal" id="section-gitbook_18">
                     
                         <h1 id="push-notifications">Push notifications</h1>
+<p>In Backbeam you don&#39;t send push notifications directly to certain devices. Instead, you subscribe devices to channels and then you send notifications to those channels. Backbeam takes care about what devices are in which channels.</p>
+<p>To subscribe a device to a channel you need to know its device token and the gateway. At this moment two gateways are supported: apn (Apple Push Notifications for iOS devices) and gcm (Google Cloud Messaging for Android devices).</p>
+<p>For iOS devices the device token is a string with the base64 representation of the <code>NSData</code> object you receive in the <code>application:didRegisterForRemoteNotificationsWithDeviceToken:</code> method in the <code>AppDelegate</code>. For Android devices the device token is the <code>registration_id</code> returned in the intent of type <code>com.google.android.c2dm.intent.REGISTRATION</code>.</p>
+<h2 id="subscribing-and-unsubscribing-devices">Subscribing and unsubscribing devices</h2>
+<p>Once you know the device token you can subscribe that device to one or more channels easily.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> device = <span class="hljs-string">'abcdefabcdefabcdefabcdefabcdef'</span>
+backbeam.subscribeDeviceToChannels(<span class="hljs-string">'gcm'</span>, device, <span class="hljs-string">'channel1'</span>, <span class="hljs-string">'channel2'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+  <span class="hljs-comment">// the device is now subscribed if no error ocurred</span>
+})
+</code></pre>
+<p>Unsubscribing a device from one or more channels is very similar:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> device = <span class="hljs-string">'abcdefabcdefabcdefabcdefabcdef'</span>
+backbeam.unsubscribeDeviceFromChannels(<span class="hljs-string">'gcm'</span>, device, <span class="hljs-string">'channel1'</span>, <span class="hljs-string">'channel2'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+  <span class="hljs-comment">// the device is now unsubscribed from those channels if no error ocurred</span>
+})
+</code></pre>
+<p>You can also unsubscribe a device from all the channels</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> device = <span class="hljs-string">'abcdefabcdefabcdefabcdefabcdef'</span>
+backbeam.unsubscribeDeviceFromAllChannels(<span class="hljs-string">'gcm'</span>, device, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+  <span class="hljs-comment">// the device is now unsubscribed from all channels if no error ocurred</span>
+})
+</code></pre>
+<p>And finally you can query the channels that a device is subscribed to:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> device = <span class="hljs-string">'abcdefabcdefabcdefabcdefabcdef'</span>
+backbeam.subscribedChannels(<span class="hljs-string">'gcm'</span>, device, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, channels)</span> {</span>
+  <span class="hljs-comment">// if no error ocurred you will get all the channels in the `channels` array</span>
+})
+</code></pre>
+<h2 id="sending-push-notifications">Sending push notifications</h2>
+<p>At any moment you can send push notifications to a channel</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> options = {
+  apn_alert: <span class="hljs-string">'Hello from node.js'</span>,
+  apn_badge: <span class="hljs-number">10</span>,
+  apn_payload_custom_key: <span class="hljs-string">'custom value'</span>
+}
+backbeam.sendPushNotification(<span class="hljs-string">'channel1'</span>, options, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+  <span class="hljs-comment">// notification sent to every device subscribed to that channel</span>
+})
+</code></pre>
+<p>The options object can have the following parameters:</p>
+<ul>
+<li><code>apn_alert</code>
+The text to be shown in the iOS push notifications</li>
+<li><code>apn_badge</code>
+An optional number that will be added to the app icon for iOS devices</li>
+<li><code>apn_sound</code>
+An optional name of a sound file to be played when a notification arrives to a iOS device</li>
+<li><code>apn_payload_*</code>
+You can include additional information adding keys with this prefix for iOS devices.</li>
+<li><code>gcm_collapse_key</code>
+It is an arbitrary string that is used to collapse a group of like messages when the device is offline</li>
+<li><code>gcm_delay_while_idle</code>
+A boolean used to request messages not be delivered until the device becomes active</li>
+<li><code>gcm_data_*</code>
+You can include additional information adding keys with this prefix for Android devices.</li>
+</ul>
 
                     
                     </section>
