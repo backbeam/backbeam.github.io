@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.2" data-basepath="." data-revision="1399664047867">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.2" data-basepath="." data-revision="1399664636889">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,19 @@
                     <section class="normal" id="section-gitbook_33">
                     
                         <h1 id="controllers">Controllers</h1>
+<p>All request are routed and executed using controllers. When you create a new controller you specify the HTTP method that this controller will handle and the path-pattern. The most simple route would be an HTTP GET method responding to the / (root) path.</p>
+<p>Controllers are written in JavaScript with the JavaScript SDK plus some additions specific of web development.</p>
+<p>The most simple controller would be a controller with this code:</p>
+<pre><code class="lang-javascript">response.send(<span class="hljs-string">'Hello world'</span>)
+</code></pre>
+<p>You edit the code right in your browser. There is no need to use any other development tool. You will see two URLs below the code editor similar to this: <code>http://web-v1- dev-your-project.backbeamapps.com/</code>. By default Backbeam creates a few subdomains for your project (this is explained in the next section). You can access that URL right now. While you are developing the URLs are password-protected. You can see the credentials you need to use in the &quot;Web development&quot; section. This way your web is only visible to the world when it is ready.</p>
+<h2 id="url-patterns">URL patterns</h2>
+<p>When you create a controller you can define a constant path (such as <code>/users/top-users-in-my-webapp</code>) or a pattern. Patterns contain path segments beginning with : and followed by a name. You will be able to access the value of that path segment using that name in your controller. For example if you define a URL pattern like this:</p>
+<p><code>/items/:item</code></p>
+<p>If someone requests the path <code>/items/some-item</code> then you can access the parameter called &#39;item&#39; in your code as follows:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// request.params.item = 'some-item' in the example (/items/some-item)</span>
+response.send(<span class="hljs-string">'Requesting item: '</span>+request.params.item)
+</code></pre>
 
                     
                     </section>

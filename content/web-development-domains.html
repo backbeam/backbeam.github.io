@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.3" data-basepath="." data-revision="1399664047867">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.3" data-basepath="." data-revision="1399664636889">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,10 @@
                     <section class="normal" id="section-gitbook_34">
                     
                         <h1 id="subdomains-and-custom-domain">Subdomains and custom domain</h1>
+<p>Backbeam creates a few subdomains for your web application. The pattern is:</p>
+<p><code>http://web-[&lt;version&gt;-]&lt;env&gt;-&lt;your-project&gt;.backbeamapps.com</code></p>
+<p>The first subdomain is optional and defines the web version to use. Each web version has an identifier (v1, v2,...). If you omit this parameter the default version is used. You can change the default version in the &quot;Views and controllers&quot; section of your project. The second subdomain is the environment to use which is either <code>dev</code> or <code>pro</code>. Depending on this parameter you will access either the development or the production database.</p>
+<p>When using a custom domain it will point to the default version at the moment in the pro environment. To configure your custom domain you need to go to your project configuration and define it. Then you need to change your DNS configuration creating a <code>CNAME</code> record directed to <code>backbeamapps.com</code>.</p>
 
                     
                     </section>

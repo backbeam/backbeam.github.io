@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.4" data-basepath="." data-revision="1399664047867">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.4" data-basepath="." data-revision="1399664636889">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -535,6 +535,67 @@
                     <section class="normal" id="section-gitbook_36">
                     
                         <h1 id="views-templates-">Views (templates)</h1>
+<p>Usually you won&#39;t send HTML to the browser using <code>response.send(&#39;&lt;html&gt;...&lt;/html&gt;&#39;)</code>. You can use views instead. This feture lets you create templates with a powerful templating engine to generate dynamic HTML (or any other text-based format).</p>
+<p>This templating engine is called <a href="http://mozilla.github.io/nunjucks/" target="_blank">nunjucks</a> and it&#39;s maintained by Mozilla.</p>
+<p>You can create for example an <code>index.html</code> view and write</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Hello world!<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>Then in your controller can render this view just calling:</p>
+<pre><code class="lang-javascript">response.render(<span class="hljs-string">'index.html'</span>)
+</code></pre>
+<p>But you can do more than that. You can pass options options to the template and inside the template you can do if statements, loops, print values,... Let&#39;s see a simple yet more advanced example. This could be your view</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Hello {{ message }}!<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>This could be your controller:</p>
+<pre><code class="lang-javascript">response.render(<span class="hljs-string">'index.html'</span>, { message: <span class="hljs-string">'from Backbeam'</span> })
+</code></pre>
+<p>Let&#39;s see an example using data from the database:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// supposing we have an 'item' entity with a 'name' field</span>
+backbeam.select(<span class="hljs-string">'item'</span>).query(<span class="hljs-string">'sort by created_at asc'</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, items)</span> {</span>
+    response.render(<span class="hljs-string">'index.html'</span>, { items: items }, <span class="hljs-literal">true</span>)
+    <span class="hljs-comment">// the third argument set to 'true' means that the output will be autoescaped</span>
+})
+</code></pre>
+<p>This could be your view:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+    {% for item in items %}
+        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>{{ item.get('name') }}<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    {% endfor %}
+    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>Note that views are only accessible from controllers, they are not accessible directly through URLs.</p>
+<p>Remember that you can learn more on how to use controllers reading the JavaScript SDK documentation.</p>
+<h2 id="autoescaping">Autoescaping</h2>
+<p>The response.render() method accepts optionally a boolean third argument. If set to true tells the template engine to autoescape the output. So if you have a controller like this:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> message = <span class="hljs-string">'Hello &lt;strong&gt;world&lt;/strong&gt;'</span>
+response.render(<span class="hljs-string">'index.html'</span>, { message:message }, <span class="hljs-literal">true</span>)
+</code></pre>
+<p>And you want to print the message in a template like this:</p>
+<p><code>Message: {{ message }}</code></p>
+<p>The characters of the message will be escaped so you won&#39;t see anything in a bold font. This prevents Cross-site-scripting attacks. If you aren&#39;t using autoescaping you should escape manually the output as follows:</p>
+<p><code>Message: {{ message|escape }}</code></p>
+<p>Sometimes you don&#39;t want some values to be escaped. For example if you want to show the content of a rich-text field. If autoescaping is activated you can prevent a certain value to be escaped using the safe filter:</p>
+<p><code>Message: {{ message|safe }}</code></p>
+<h2 id="custom-filters">Custom filters</h2>
+<p>You can extend the capabilities of the templating engine by setting your own custom filters. There are several builtin filters, for example:</p>
+<p><code>{{ my_string_variable|default(&#39;the string was empty&#39;) }}</code></p>
+<p>But you can also define your own filters. You need to create a file called filters.js in the Libraries section. All the functions exported in this file will be used as custom filters. For example, if you define a function like this in the filters.js file:</p>
+<pre><code class="lang-javascript">module.exports.pluralize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(count, singular, plural)</span> {</span>
+    <span class="hljs-keyword">return</span> count &gt; <span class="hljs-number">1</span> ? plural : singular
+}
+</code></pre>
+<p>You can just start using it in your templates. For example:</p>
+<pre><code class="lang-html">{% set count = 1 %}
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>{{ count }} {{ count|pluralize('category', 'categories') }}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+
+{% set count = 5 %}
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>{{ count }} {{ count|pluralize('category', 'categories') }}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+</code></pre>
+<p>The first parameter passed to the function is the variable to which the filter is applied. Then you can add more parameters as needed.</p>
 
                     
                     </section>
