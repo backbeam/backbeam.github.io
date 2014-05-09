@@ -1,0 +1,847 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="./manifest.appcache">
+    <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
+        
+        <meta charset="UTF-8">
+        <title>Server side logic | Backbeam documentation</title>
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="robots" content="index, follow">
+        <meta name="author" content="backbeam">
+        <meta name="description" content="Welcome to the Backbeam *documentation*.">
+        <meta name="keywords" content="gitbook,github" >
+        <meta name="generator" content="www.gitbook.io">
+
+        
+        <link rel="next" href="./javascript-push-notifications.html" />
+        
+        
+        <link rel="prev" href="./javascript-authentication.html" />
+        
+
+        <meta property="og:title" content="Server side logic | Backbeam documentation">
+        <meta property="og:site_name" content="Backbeam documentation">
+        <meta property="og:type" content="book">
+        <meta property="og:locale" content="en_US">
+
+        <meta property="book:author" content="https://github.com/backbeam">
+        <meta property="book:tag" content="GitBook">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    </head>
+    <body>
+        
+
+        <link rel="stylesheet" href="gitbook/style.css">
+        
+
+
+        
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.3" data-basepath="." data-revision="1399664047867">
+    <div class="book-header">
+    <!-- Actions Left -->
+    
+    <a href="https://backbeam.io/documentation" target="_blank" class="btn pull-left"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-summary"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+	<div class="dropdown-caret">
+  <span class="caret-outer"></span>
+  <span class="caret-inner"></span>
+</div>
+
+	<div class="btn-group btn-block">
+		<button id="reduce-font-size" class="btn btn-default">A</button>
+		<button id="enlarge-font-size" class="btn btn-default">A</button>
+	</div>
+
+	<ul class="list-group font-family-list">
+		<li class="list-group-item" data-font="0">Serif</li>
+		<li class="list-group-item" data-font="1">Sans</li>
+	</ul>
+
+	<div class="btn-group btn-group-xs btn-block color-theme-list">
+	  <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+	  <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+	  <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+	</div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    
+    
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+    <a href="https://github.com/backbeam/backbeam.github.io/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/backbeam/backbeam.github.io/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="./" >Backbeam documentation</a>
+    </h1>
+</div>
+
+    <div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+
+        
+
+        
+        <li>
+            <a href="https://github.com/backbeam/backbeam.github.io/edit/master/javascript-server-side-logic.md" target="blank">Edit and Contribute</a>
+        </li>
+        
+
+        
+        <li class="divider"></li>
+        
+
+        <li data-level="0" data-path="index.html">
+            <a href="./"><i class="fa fa-check"></i> Introduction</a>
+        </li>
+        
+            <li  data-level="1" data-path="overview.html">
+                
+                <a href="./overview.html">
+                    <i class="fa fa-check"></i> <b>1.</b> Overview
+                </a>
+                
+                
+                <ul class="articles">
+                    
+                        <li  data-level="1.1" data-path="overview-features.html">
+                            
+                            <a href="./overview-features.html">
+                                <i class="fa fa-check"></i> <b>1.1.</b> Features
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.2" data-path="overview-query-language.html">
+                            
+                            <a href="./overview-query-language.html">
+                                <i class="fa fa-check"></i> <b>1.2.</b> Query language
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.3" data-path="overview-control-panel.html">
+                            
+                            <a href="./overview-control-panel.html">
+                                <i class="fa fa-check"></i> <b>1.3.</b> Control panel
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.4" data-path="overview-business-logic.html">
+                            
+                            <a href="./overview-business-logic.html">
+                                <i class="fa fa-check"></i> <b>1.4.</b> Where to write the business logic
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.5" data-path="overview-authentication.html">
+                            
+                            <a href="./overview-authentication.html">
+                                <i class="fa fa-check"></i> <b>1.5.</b> Users authentication
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.6" data-path="overview-push-notifications.html">
+                            
+                            <a href="./overview-push-notifications.html">
+                                <i class="fa fa-check"></i> <b>1.6.</b> Push notifications
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.7" data-path="overview-email-delivery.html">
+                            
+                            <a href="./overview-email-delivery.html">
+                                <i class="fa fa-check"></i> <b>1.7.</b> Email templates and delivery
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="1.8" data-path="overview-realtime.html">
+                            
+                            <a href="./overview-realtime.html">
+                                <i class="fa fa-check"></i> <b>1.8.</b> Realtime
+                            </a>
+                            
+                        </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li  data-level="2" data-path="ios-sdk.html">
+                
+                <a href="./ios-sdk.html">
+                    <i class="fa fa-check"></i> <b>2.</b> iOS SDK
+                </a>
+                
+                
+                <ul class="articles">
+                    
+                        <li  data-level="2.1" data-path="ios-objects.html">
+                            
+                            <a href="./ios-objects.html">
+                                <i class="fa fa-check"></i> <b>2.1.</b> Objects and query results
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="2.2" data-path="ios-data.html">
+                            
+                            <a href="./ios-data.html">
+                                <i class="fa fa-check"></i> <b>2.2.</b> Manipulating data
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="2.3" data-path="ios-authentication.html">
+                            
+                            <a href="./ios-authentication.html">
+                                <i class="fa fa-check"></i> <b>2.3.</b> Users authentication
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="2.4" data-path="ios-server-side-logic.html">
+                            
+                            <a href="./ios-server-side-logic.html">
+                                <i class="fa fa-check"></i> <b>2.4.</b> Server side logic
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="2.5" data-path="ios-push-notifications.html">
+                            
+                            <a href="./ios-push-notifications.html">
+                                <i class="fa fa-check"></i> <b>2.5.</b> Push notifications
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="2.6" data-path="ios-realtime.html">
+                            
+                            <a href="./ios-realtime.html">
+                                <i class="fa fa-check"></i> <b>2.6.</b> Realtime
+                            </a>
+                            
+                        </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li  data-level="3" data-path="android-sdk.html">
+                
+                <a href="./android-sdk.html">
+                    <i class="fa fa-check"></i> <b>3.</b> Android SDK
+                </a>
+                
+                
+                <ul class="articles">
+                    
+                        <li  data-level="3.1" data-path="android-objects.html">
+                            
+                            <a href="./android-objects.html">
+                                <i class="fa fa-check"></i> <b>3.1.</b> Objects and query results
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="3.2" data-path="android-data.html">
+                            
+                            <a href="./android-data.html">
+                                <i class="fa fa-check"></i> <b>3.2.</b> Manipulating data
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="3.3" data-path="android-authentication.html">
+                            
+                            <a href="./android-authentication.html">
+                                <i class="fa fa-check"></i> <b>3.3.</b> Users authentication
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="3.4" data-path="android-server-side-logic.html">
+                            
+                            <a href="./android-server-side-logic.html">
+                                <i class="fa fa-check"></i> <b>3.4.</b> Server side logic
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="3.5" data-path="android-push-notifications.html">
+                            
+                            <a href="./android-push-notifications.html">
+                                <i class="fa fa-check"></i> <b>3.5.</b> Push notifications
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="3.6" data-path="android-realtime.html">
+                            
+                            <a href="./android-realtime.html">
+                                <i class="fa fa-check"></i> <b>3.6.</b> Realtime
+                            </a>
+                            
+                        </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li  data-level="4" data-path="javascript-sdk.html">
+                
+                <a href="./javascript-sdk.html">
+                    <i class="fa fa-check"></i> <b>4.</b> JavaScript SDK
+                </a>
+                
+                
+                <ul class="articles">
+                    
+                        <li  data-level="4.1" data-path="javascript-data.html">
+                            
+                            <a href="./javascript-data.html">
+                                <i class="fa fa-check"></i> <b>4.1.</b> Manipulating data
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="4.2" data-path="javascript-authentication.html">
+                            
+                            <a href="./javascript-authentication.html">
+                                <i class="fa fa-check"></i> <b>4.2.</b> Users authentication
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="4.3" data-path="javascript-server-side-logic.html">
+                            
+                            <a href="./javascript-server-side-logic.html">
+                                <i class="fa fa-check"></i> <b>4.3.</b> Server side logic
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="4.4" data-path="javascript-push-notifications.html">
+                            
+                            <a href="./javascript-push-notifications.html">
+                                <i class="fa fa-check"></i> <b>4.4.</b> Push notifications
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="4.5" data-path="javascript-realtime.html">
+                            
+                            <a href="./javascript-realtime.html">
+                                <i class="fa fa-check"></i> <b>4.5.</b> Realtime
+                            </a>
+                            
+                        </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li  data-level="5" data-path="web-development.html">
+                
+                <a href="./web-development.html">
+                    <i class="fa fa-check"></i> <b>5.</b> Web development
+                </a>
+                
+                
+                <ul class="articles">
+                    
+                        <li  data-level="5.1" data-path="web-development-versioning.html">
+                            
+                            <a href="./web-development-versioning.html">
+                                <i class="fa fa-check"></i> <b>5.1.</b> Versioning
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="5.2" data-path="web-development-controllers.html">
+                            
+                            <a href="./web-development-controllers.html">
+                                <i class="fa fa-check"></i> <b>5.2.</b> Controllers
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="5.3" data-path="web-development-domains.html">
+                            
+                            <a href="./web-development-domains.html">
+                                <i class="fa fa-check"></i> <b>5.3.</b> Subdomains and custom domain
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="5.4" data-path="web-development-views.html">
+                            
+                            <a href="./web-development-views.html">
+                                <i class="fa fa-check"></i> <b>5.4.</b> Views (templates)
+                            </a>
+                            
+                        </li>
+                    
+                        <li  data-level="5.5" data-path="web-development-assets.html">
+                            
+                            <a href="./web-development-assets.html">
+                                <i class="fa fa-check"></i> <b>5.5.</b> Assets
+                            </a>
+                            
+                        </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li  data-level="6" data-path="rest-api.html">
+                
+                <a href="./rest-api.html">
+                    <i class="fa fa-check"></i> <b>6.</b> REST API
+                </a>
+                
+                
+            </li>
+        
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 75%;min-width: 72.22222222222223%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="./index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="./overview.html" title="Overview" class="chapter done new-chapter" data-progress="1" style="left: 2.7777777777777777%;"></a>
+    
+        <a href="./overview-features.html" title="Features" class="chapter done " data-progress="1.1" style="left: 5.555555555555555%;"></a>
+    
+        <a href="./overview-query-language.html" title="Query language" class="chapter done " data-progress="1.2" style="left: 8.333333333333334%;"></a>
+    
+        <a href="./overview-control-panel.html" title="Control panel" class="chapter done " data-progress="1.3" style="left: 11.11111111111111%;"></a>
+    
+        <a href="./overview-business-logic.html" title="Where to write the business logic" class="chapter done " data-progress="1.4" style="left: 13.88888888888889%;"></a>
+    
+        <a href="./overview-authentication.html" title="Users authentication" class="chapter done " data-progress="1.5" style="left: 16.666666666666668%;"></a>
+    
+        <a href="./overview-push-notifications.html" title="Push notifications" class="chapter done " data-progress="1.6" style="left: 19.444444444444443%;"></a>
+    
+        <a href="./overview-email-delivery.html" title="Email templates and delivery" class="chapter done " data-progress="1.7" style="left: 22.22222222222222%;"></a>
+    
+        <a href="./overview-realtime.html" title="Realtime" class="chapter done " data-progress="1.8" style="left: 25%;"></a>
+    
+        <a href="./ios-sdk.html" title="iOS SDK" class="chapter done new-chapter" data-progress="2" style="left: 27.77777777777778%;"></a>
+    
+        <a href="./ios-objects.html" title="Objects and query results" class="chapter done " data-progress="2.1" style="left: 30.555555555555557%;"></a>
+    
+        <a href="./ios-data.html" title="Manipulating data" class="chapter done " data-progress="2.2" style="left: 33.333333333333336%;"></a>
+    
+        <a href="./ios-authentication.html" title="Users authentication" class="chapter done " data-progress="2.3" style="left: 36.111111111111114%;"></a>
+    
+        <a href="./ios-server-side-logic.html" title="Server side logic" class="chapter done " data-progress="2.4" style="left: 38.888888888888886%;"></a>
+    
+        <a href="./ios-push-notifications.html" title="Push notifications" class="chapter done " data-progress="2.5" style="left: 41.666666666666664%;"></a>
+    
+        <a href="./ios-realtime.html" title="Realtime" class="chapter done " data-progress="2.6" style="left: 44.44444444444444%;"></a>
+    
+        <a href="./android-sdk.html" title="Android SDK" class="chapter done new-chapter" data-progress="3" style="left: 47.22222222222222%;"></a>
+    
+        <a href="./android-objects.html" title="Objects and query results" class="chapter done " data-progress="3.1" style="left: 50%;"></a>
+    
+        <a href="./android-data.html" title="Manipulating data" class="chapter done " data-progress="3.2" style="left: 52.77777777777778%;"></a>
+    
+        <a href="./android-authentication.html" title="Users authentication" class="chapter done " data-progress="3.3" style="left: 55.55555555555556%;"></a>
+    
+        <a href="./android-server-side-logic.html" title="Server side logic" class="chapter done " data-progress="3.4" style="left: 58.333333333333336%;"></a>
+    
+        <a href="./android-push-notifications.html" title="Push notifications" class="chapter done " data-progress="3.5" style="left: 61.111111111111114%;"></a>
+    
+        <a href="./android-realtime.html" title="Realtime" class="chapter done " data-progress="3.6" style="left: 63.888888888888886%;"></a>
+    
+        <a href="./javascript-sdk.html" title="JavaScript SDK" class="chapter done new-chapter" data-progress="4" style="left: 66.66666666666667%;"></a>
+    
+        <a href="./javascript-data.html" title="Manipulating data" class="chapter done " data-progress="4.1" style="left: 69.44444444444444%;"></a>
+    
+        <a href="./javascript-authentication.html" title="Users authentication" class="chapter done " data-progress="4.2" style="left: 72.22222222222223%;"></a>
+    
+        <a href="./javascript-server-side-logic.html" title="Server side logic" class="chapter done " data-progress="4.3" style="left: 75%;"></a>
+    
+        <a href="./javascript-push-notifications.html" title="Push notifications" class="chapter  " data-progress="4.4" style="left: 77.77777777777777%;"></a>
+    
+        <a href="./javascript-realtime.html" title="Realtime" class="chapter  " data-progress="4.5" style="left: 80.55555555555556%;"></a>
+    
+        <a href="./web-development.html" title="Web development" class="chapter  new-chapter" data-progress="5" style="left: 83.33333333333333%;"></a>
+    
+        <a href="./web-development-versioning.html" title="Versioning" class="chapter  " data-progress="5.1" style="left: 86.11111111111111%;"></a>
+    
+        <a href="./web-development-controllers.html" title="Controllers" class="chapter  " data-progress="5.2" style="left: 88.88888888888889%;"></a>
+    
+        <a href="./web-development-domains.html" title="Subdomains and custom domain" class="chapter  " data-progress="5.3" style="left: 91.66666666666667%;"></a>
+    
+        <a href="./web-development-views.html" title="Views (templates)" class="chapter  " data-progress="5.4" style="left: 94.44444444444444%;"></a>
+    
+        <a href="./web-development-assets.html" title="Assets" class="chapter  " data-progress="5.5" style="left: 97.22222222222223%;"></a>
+    
+        <a href="./rest-api.html" title="REST API" class="chapter  new-chapter" data-progress="6" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_21">
+                    
+                        <h1 id="server-side-logic">Server side logic</h1>
+<h2 id="invoking-web-controllers">Invoking web controllers</h2>
+<p>If you don&#39;t want to implement the business logic in your client-side code you can always implement it in the server-side code (web controllers) and invoke the controllers directly. You can read more about the benefits of write server-side logic.</p>
+<p>There are two methods to invoke web controllers directly:</p>
+<h3 id="using-requestobjects">Using requestObjects</h3>
+<p>If the web controller sends objects then you can use requestObjects and the SDK will parse the response and convert it into backbeam objects. For example</p>
+<pre><code class="lang-javascript">backbeam.requestObjects(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/objects'</span>, { param: <span class="hljs-string">'value'</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects, total)</span> {</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;objects.length; i++) {
+    console.log(<span class="hljs-string">'name ='</span>, objects[i].get(<span class="hljs-string">'name'</span>))
+  }
+})
+</code></pre>
+<p>You can pass parameters to the web controller using the third parameter. The web controller for this example could be something like this:</p>
+<pre><code class="lang-javascript">backbeam.query(<span class="hljs-string">'user'</span>)
+  .query(<span class="hljs-string">'where some-field = ?'</span>, request.query.param)
+  .fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, response)
+</code></pre>
+<p>If the server did any authentication stuff (signup, login, logout) you will have the backbeam.currentUser() object synchronized.</p>
+<h3 id="using-requestjson">Using requestJSON</h3>
+<p>If the web controller sends JSON then you should use the requestJSON method. It is very similar to requestObjects.</p>
+<pre><code class="lang-javascript">backbeam.requestJSON(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/give-me-json'</span>, { param: <span class="hljs-string">'value'</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, json)</span> {</span>
+  <span class="hljs-comment">// do something with `json`</span>
+})
+</code></pre>
+<p>The web controller for this example could be just something like this (or as complicated as you wish!):</p>
+<pre><code class="lang-javascript">resposne.json({ message: <span class="hljs-string">'Hello world!'</span> })
+</code></pre>
+<p>This method also updates the backbeam.currentUser() variable if the server-side code did some authentication management.</p>
+<h2 id="server-side-code">Server-side code</h2>
+<p>In your controllers you can access some default objects to access the HTTP request information or to generate and manipulate the HTTP response</p>
+<h3 id="sending-realtime-events">Sending realtime events</h3>
+<p>From the server side you cannot subscribe/unsubscribe to realtime events but you can send realtime events. It is as easy as follows:</p>
+<pre><code class="lang-javascript">backbeam.sendRealTimeEvent(<span class="hljs-string">'event-name'</span>, { key: <span class="hljs-string">'value'</span> })
+</code></pre>
+<p>The second argument should only contain key-value pairs whose values are strings.</p>
+<h3 id="the-request-object">The request object</h3>
+<p>There are some implicit objects in the server side code. One of them is the request object that contains information about the HTTP request</p>
+<ul>
+<li><code>request.body</code> is a collection of key-value pairs containing the submitted params to the server. For example values submited in an HTTP POST form</li>
+<li><code>request.query</code> is a collection of key-value paris containing the params sent in the querystring part of the URL.</li>
+<li><code>request.url</code> contains the requested URL string</li>
+<li><code>request.params</code> contains a collection of key-value paris containing the dynamic path segments of the URL. For example, if you created a controller associated with this pattern: <code>/item/:itemid</code> and the <code>/item/1234</code> URL is requested, then request.params will contain an objects as follows: <code>{ itemid: &#39;1234&#39; }</code>. So you can access the itemid param by using request.params.itemid
+request.acceptedLanguages is an array of languages sent by the http user-agent. For example: <code>[&#39;en_US&#39;, &#39;en&#39;, &#39;es&#39;]</code></li>
+<li><code>request.ip</code> the requester IP address</li>
+<li><code>request.headers</code> the request headers with the header names in lower case. For example you can get the &#39;Host&#39; request header with request.headers[&#39;host&#39;] or request.headers.host</li>
+<li><code>request.files</code> any file sent to the controller in a multipart request. See bellow how to save a file uploaded into backbeam</li>
+</ul>
+<h3 id="save-uploaded-objects">Save uploaded objects</h3>
+<p>To save a file sent to the controller there is a special saveFile method:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> file = request.files[<span class="hljs-string">'file'</span>] <span class="hljs-comment">// `file` is the param name</span>
+<span class="hljs-keyword">var</span> picture = backbeam.empty(<span class="hljs-string">'file'</span>) <span class="hljs-comment">// you can create a new object or you can use an existing one</span>
+picture.saveFile(file, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+    <span class="hljs-comment">// file saved</span>
+})
+</code></pre>
+<p>Each object inside request.files has the following parameters: name, type and size</p>
+<h3 id="the-response-object">The response object</h3>
+<p>Using the response object you can manipulate the HTTP response</p>
+<p>If you want to send just a string you would call the response.send as follows</p>
+<pre><code class="lang-javascript">response.send(<span class="hljs-string">'Hello world'</span>)
+</code></pre>
+<p>If you want to render an view template you would use the response.render method. For exmaple:</p>
+<pre><code class="lang-javascript">response.render(<span class="hljs-string">'index.html'</span>, { events: some_objects })
+</code></pre>
+<p>The first argument is the name of the view you have created in the control panel. The second argument is optional and it should be a collection of key-value paris. These objects can be accessed from the referenced view to render the content of the response.</p>
+<p>When you render a template by default a <code>Content-Type: text/html;charset=utf-8</code> header is set on the HTTP response</p>
+<p>You can change the content-type response header using</p>
+<pre><code class="lang-javascript">response.contentType(<span class="hljs-string">'text/plain'</span>)
+</code></pre>
+<p>By default the response&#39;s HTTP status code is 200. You can change that using:</p>
+<pre><code class="lang-javascript">response.status(<span class="hljs-number">418</span>) <span class="hljs-comment">// typical status codes are: 200, 201, 301, 302, 400, 403, 404, 500, 501,...</span>
+</code></pre>
+<p>You can manipulate the response headers using get and set</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> currentValue = response.get(<span class="hljs-string">'Cache-Control'</span>)
+response.set(<span class="hljs-string">'Cache-Control'</span>, <span class="hljs-string">'no-cache, private, no-store, must-revalidate'</span>)
+</code></pre>
+<p>You can send a JSON response using repsonse.json. The <code>Content-Type</code> header is automatically set to <code>application/json;charset=utf-8</code> and the argument is automattically converted to JSON. Example:</p>
+<pre><code class="lang-javascript">response.json({message: <span class="hljs-string">'Hello world'</span>})
+</code></pre>
+<p>If you need to redirect a user you can use the response.redirect method. It is as simple as follows:</p>
+<pre><code class="lang-javascript">response.redirect(<span class="hljs-string">'http://www.example.com'</span>)
+</code></pre>
+<p>You can also send files from your controllers. For example you can create a generic controller with the following path pattern: <code>/see/:id/:version</code> and then implement this code:</p>
+<pre><code class="lang-javascript">backbeam.read(<span class="hljs-string">'file'</span>, request.params.id, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, obj)</span> {</span>
+  response.sendFile(obj, {width:<span class="hljs-number">100</span>})
+})
+</code></pre>
+<p>The controller needs the unique identifier of the file object and the version field value. The version param is not used in the code but you should include it in the path. The version value changes each time the file content changes, so including the version in the URL prevents the browser to cache one version of the file and not refreshing it if the file changes.</p>
+<p>The <code>sendFile</code> method accepts two arguments: the first is the file object and the second one is an optional object containing options for the file. If the file is an image you can for example scale it setting its width. If you set the option values in code be aware that if you change them some users will see cached versions with old option values. It is better to change the controller path pattern when you change hard-coded transformation options.</p>
+<h3 id="the-session-object">The session object</h3>
+<p>Backbeam provides a session objects based on cookies. You need to be aware that cookies have a limited size depending on the user&#39;s browser so you should only store minimal information. If you need to store more information concerning a user you should user the built-in backbeam database insted of the session object.</p>
+<p>You can save information in the cookie just by calling the session.set method. Example</p>
+<p>session.set(&#39;search-filters-enabled&#39;, false)
+You can store any object that can be converted to JSON. To retrieve a stored value use session.get</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> filtersEnabled = session.get(<span class="hljs-string">'search-filters-enabled'</span>)
+</code></pre>
+<p>You can delete a certain value using session.del(key) and you can delete all the values using session.destroy(). You tipically would use the session.destroy() method combined with a method call to backbeam.logout() if you are storing some information about the current logged user.</p>
+<h3 id="using-libraries">Using libraries</h3>
+<p>Your server-side code will grow and you probably will need repetitive code in many controllers. In that case you can create libs that are just re-usable parts of code. The API to use libs is very similar to the node.js modules. This is done by design to keep the code as compatible as possible between node.js and bacbkeam. For example you can create a helpers.js lib with a code similar to this:</p>
+<pre><code class="lang-javascript">exports.awesomeFunction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(...)</span> {</span>...}
+</code></pre>
+<p>Then you use those utility functions froma controller or from another lib.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'helpers'</span>)
+helpers.awesomeFunction(...)
+</code></pre>
+<p>As in node.js packages you can also completely override the exports object as follows:</p>
+<pre><code class="lang-javascript">module.exports = anything
+</code></pre>
+<h3 id="sending-objects-to-the-sdks">Sending objects to the SDKs</h3>
+<p>Instead of creating, querying or editing objects directly from the SDKs you can also write the business-logic in the server-side and send the objects to the SDK that you are using. This has some benefits:</p>
+<p>The business logic is in the server-side so you can change it at any time without needing to update the mobile applications. And without the problem of having users using old versions of your application (and therefore running old business logic).
+You can share business logic between platforms. You can write the business logic in your controllers and then call those controllers from iOS, Android, etc. without having to re-implement all the business rules in each platform.</p>
+<p>You can write client applications without API keys using only methods that call your controllers. This way since you aren&#39;t using API keys you don&#39;t have the problem of anyone stoling your API keys.</p>
+<p>It is very simple to send objects from a controller to a client application. Many server-side functions let you pass the response object instead of a callback. This way backbeam fills the response object with the result data and in a format that the client applications can understand. See the example:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// pass the response object instead of a callback and the controller</span>
+<span class="hljs-comment">// will send a JSON response that the SDKs will understand</span>
+backbeam.select(<span class="hljs-string">'some-entity'</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, response)
+</code></pre>
+<p>Try the example above and execute it. You will see a JSON response with the common response format</p>
+<p>This is a list of methods that support this functionality (passing the reponse object instead of a callback to generate a JSON response)</p>
+<ul>
+<li>object.save()</li>
+<li>object.refresh()</li>
+<li>object.remove()</li>
+<li>query.fetch()</li>
+<li>query.near()</li>
+<li>query.bounding()</li>
+<li>backbeam.login()</li>
+<li>backbeam.read()</li>
+<li>backbeam.verifyCode()</li>
+<li>backbeam.twitterSignup()</li>
+<li>backbeam.facebookSignup()</li>
+</ul>
+<p>Additionally if you make some users authentication operation the controller will send special response headers to tell the SDK which user is now logged in or if the user has logged out. The SDK is also responsible of sending a special request header to tell the controller which is the logged user so from the controller you can just call <code>backbeam.currentUser()</code> as always to know the current logged user.</p>
+<p>You can know from what SDK the controller has been invoked by using <code>backbeam.sdk()</code>. With this method you could also do conditional rendering. For example:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> callback = <span class="hljs-literal">null</span>
+<span class="hljs-keyword">if</span> (backbeam.sdk()) {
+  <span class="hljs-comment">// generate an understable response if an SDK is invoking the controller</span>
+  callback = response
+} <span class="hljs-keyword">else</span> {
+  callback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects)</span> {</span>
+    <span class="hljs-comment">// render an HTML tempalte if the controller is invoked from the browser</span>
+    response.render(<span class="hljs-string">'template.html'</span>, { objects:objects })
+  }
+}
+backbeam.select(<span class="hljs-string">'some-entity'</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, callback)
+</code></pre>
+<p>Or simply</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> callback = backbeam.sdk() ? response : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, objects)</span> {</span>
+  response.render(<span class="hljs-string">'template.html'</span>, { objects:objects })
+}
+backbeam.select(<span class="hljs-string">'some-entity'</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, callback)
+</code></pre>
+<h3 id="sending-json-to-the-sdks">Sending JSON to the SDKs</h3>
+<p>If you wan to have full control of the response format you can also send JSON:</p>
+<pre><code class="lang-javascript">response.json({ hello: <span class="hljs-string">'world'</span> })
+</code></pre>
+<p>The good news is that all the side effects of the previous section (Sending objects to the SDKs) also applies when you send JSON responses. So all the users authentication stuff is included: the SDK tells the controller which user is authenticated and you can access it with <code>backbeam.currentUser()</code> and the controller will tell the SDK if the current logged user has changed or the user has logged out.</p>
+<p>Learn how to invoke controllers from the SDKs: from Android and from iOS</p>
+<h3 id="http-client">HTTP Client</h3>
+<p>In the server-side code you can make http requests if for some reason you need to integrate your backend with third-party services. This API supports HTTP and HTTPS and <code>gzip</code> and <code>deflate</code> compressed responses.</p>
+<p>The way to create a new HTTP Client is as follows:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> http = backbeam.httpClient()
+And the way to make a request is the following:
+
+http.request(options, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, res)</span> {</span>
+    <span class="hljs-comment">// handle the response</span>
+})
+</code></pre>
+<p>You can make multiple requests with the same HTTP Client. The only benefit of creating different HTTP Clients is that each one has a different cookie storage.</p>
+<p>The options parameter is an object that can contain the following attributes:</p>
+<ul>
+<li><code>url</code>
+A string containing the URL to request. It is mandatory
+method
+The HTTP method. If not defined GET is used by default</li>
+<li><code>qs</code>
+An optional object with the query string parameters. For example { site: &#39;stackoverflow&#39;, sort: &#39;reputation&#39;, order: &#39;desc&#39; }</li>
+<li><code>headers</code>
+An optional object to specify additional request HTTP headers</li>
+<li><code>body</code>
+An optional object that specifies the request body</li>
+<li><code>form</code>
+If present this object should be an object with key-value pairs to be encoded as application/x-www-form-urlencoded (the default encoding used in HTML when submitting POST forms)</li>
+<li><code>followRedirect</code> (default true)
+Boolean value that specifies if HTTP 3xx redirects should be followed. There is a maximum of 10 redirects</li>
+<li><code>followAllRedirects</code> (default false)
+Boolean value that specifies if no-HTTP redirects should be followed. Max 10 redirects if enabled.</li>
+<li><code>auth</code>
+An optional object for HTTP authentication that if defiend must contain a username and password. You can also pass a sendImmediately parameter (default to true). If set to true the authentication information is sent immediatly, otherwise a plain request is made waiting for a 401 response and then another request is made with the authentication information. Digest authentication is supported but you need to set sendImmediately to false.</li>
+<li><code>encoding</code>
+Optional parameter to specify the encoding to use to parse the response body. You can choose between utf-8, ascii or binary. If not present the HTTP client will inspect the Content-Type header to determine with very basic rules which encoding to use.</li>
+</ul>
+<p>The response object contains just three attributes:</p>
+<ul>
+<li><code>body</code>
+The response body</li>
+<li><code>headers</code>
+An object with the response HTTP headers</li>
+<li><code>statusCode</code>
+The HTTP status code that returned the server</li>
+</ul>
+<p>There are a few convenience methods that automatically specify the HTTP method to use:</p>
+<ul>
+<li><code>httpClient.get()</code>
+for GET requests</li>
+<li><code>httpClient.post()</code>
+for POST requests</li>
+<li><code>httpClient.put()</code>
+for PUT requests</li>
+<li><code>httpClient.patch()</code>
+for PATCH requests</li>
+<li><code>httpClient.head()</code>
+for HEAD requests</li>
+<li><code>httpClient.del()</code>
+for DELETE requests</li>
+</ul>
+<p>The HTTP Client does not apply further response manipulation than decompressing gzip and deflate encodings. If you need to consume a JSON-based REST API for example you will probably need to parse the response body using <code>JSON.parse()</code>. It is not done by the HTTP Client since there are too many ways (some non-standard) to specify if a response contains JSON data. There are many MIME types that the third-party services could be using in the <code>Content-Type</code> header (<code>text/json</code>, <code>application/json</code>,...) and some services are starting to use their own MIME types such as <code>application/vnd.github.v3+json</code>. So just use <code>JSON.parse()</code> if you know that the service you are consuming is sending JSON or not. Let&#39;s see an example</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> http = backbeam.httpClient()
+<span class="hljs-keyword">var</span> url = <span class="hljs-string">'https://api.stackexchange.com/2.1/users'</span>
+<span class="hljs-keyword">var</span> qs = { site: <span class="hljs-string">'stackoverflow'</span>, sort: <span class="hljs-string">'reputation'</span>, order: <span class="hljs-string">'desc'</span> }
+http.get({ url:url, qs:qs }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, res)</span> {</span>
+    <span class="hljs-keyword">var</span> data = <span class="hljs-built_in">JSON</span>.parse(res.body) <span class="hljs-comment">// you could wrap this into a try-catch</span>
+    <span class="hljs-keyword">var</span> items = data.items
+    response.render(<span class="hljs-string">'index.html'</span>, { items: items }, <span class="hljs-literal">true</span>)
+})
+</code></pre>
+<h3 id="sending-emails">Sending emails</h3>
+<p>There are a few automatic email messages that are sent to the users in order to confirm their email addresses, or reset their password, for example. You can also create custom email templates in the control panel and you can send those email templates from the server-side code with the following method:</p>
+<pre><code class="lang-javascript">backbeam.sendMail(<span class="hljs-string">'template-identifier'</span>, { myOption: <span class="hljs-string">'optionValue'</span>}, <span class="hljs-string">'usuario1@example.com'</span>, <span class="hljs-string">'usuario2@example.com'</span>, <span class="hljs-string">'usuario3@example.com'</span>)
+backbeam.sendMail(<span class="hljs-string">'template-identifier'</span>, { myOption: <span class="hljs-string">'optionValue'</span>}, userObject1, userObject2, userObject3)
+backbeam.sendMail(<span class="hljs-string">'template-identifier'</span>, { myOption: <span class="hljs-string">'optionValue'</span>}, userObjectsArray)
+</code></pre>
+<p>So you can use email addresses, user objects or an array of user objects.</p>
+<p>The template-identifier is present in the URL when you edit the email template. For example if you are accessing the email template in the control panel in the following address:</p>
+<pre><code class="lang-javascript">http:<span class="hljs-comment">//example.backbeam.io/conf/email/custom-example/txt</span>
+</code></pre>
+<p>The part highlighted is the template identifier you need to use when using <code>sendMail</code>. And the second parameter is the options passed to the template, so in the template you can use.</p>
+<pre><code>This is the value passed to this template: {{ myOption }}
+</code></pre><h3 id="server-side-utilities">Server-side utilities</h3>
+<p>In your web controllers the backbeam object comes with a few utility methods for common things you will need to do in some situations. All this functionality is grouped in a backbeam.util object.</p>
+<h4 id="parsing-and-generating-querystrings">Parsing and generating querystrings</h4>
+<p>Sometimes you will need to parse or generate a querystring. This is the format of the data after the ? character in a URL or the format of a HTTP message body whose <code>Content-Type</code> is <code>application/x-www-form-urlencoded</code>.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> qs = backbeam.util.querystring.stringify({ foo: <span class="hljs-number">123</span>, bar: <span class="hljs-number">456</span> }) <span class="hljs-comment">// returns 'foo=123&amp;bar=456'</span>
+<span class="hljs-keyword">var</span> params = backbeam.util.querystring.parse(<span class="hljs-string">'foo=123&amp;bar=456'</span>) <span class="hljs-comment">// returns { foo: '123', bar: '456' }</span>
+</code></pre>
+<p>Note that the <code>parse()</code> method returns strings in this example. That&#39;s because this method won&#39;t do any type conversion.</p>
+<h4 id="crypto">Crypto</h4>
+<p>Sometimes you will need to communicate with external services (with the HTTP client for example) and sometimes you will need to calculate some signatures. With <code>backbeam.util.crypto</code> you can calculate hashes and hmacs.</p>
+<p>You can call <code>backbeam.util.crypto.getHashes()</code> to obtain an array with the available algorithms. At this time you can use the following algorithms: <code>md5</code>, <code>sha1</code>, <code>sha256</code>, <code>sha384</code>, <code>sha512</code>.</p>
+<p>To calculate a hash you will create an object using <code>backbeam.util.crypto.createHash(algorithm)</code>, then you will call <code>update()</code> one or more times and finally you will get the message digest using <code>digest(encoding)</code>.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> hash = backbeam.util.crypto.createHash(<span class="hljs-string">'sha1'</span>)
+  .update(<span class="hljs-string">'The quick brown fox jumps over the lazy dog'</span>)
+  .digest(<span class="hljs-string">'hex'</span>) <span class="hljs-comment">// returns '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12'</span>
+</code></pre>
+<p>The digest encoding can be <code>hex</code>, <code>base64</code> or <code>binary</code>.</p>
+<p>Calculating an HMAC is similar. You call <code>createHmac(algorithm, key)</code> and everything else is like calculating a hash.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> hash = backbeam.util.crypto.createHmac(<span class="hljs-string">'sha1'</span>, <span class="hljs-string">'key'</span>)
+  .update(<span class="hljs-string">'The quick brown fox jumps over the lazy dog'</span>).digest(<span class="hljs-string">'hex'</span>)
+  .digest(<span class="hljs-string">'hex'</span>) <span class="hljs-comment">// returns 'de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9'</span>
+</code></pre>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./javascript-authentication.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./javascript-push-notifications.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/mode-javascript.js"></script>
+        <script src="gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+        <script src="gitbook/app.js"></script>
+        
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-disqus/plugin.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mixpanel/plugin.js"></script>
+    
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":"sepia","family":"serif","size":1},"disqus":{"shortName":"backbeamdocs"}};
+    gitbook.start(config);
+});
+</script>
+
+    </body>
+</html>
