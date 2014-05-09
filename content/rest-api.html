@@ -40,7 +40,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="6" data-basepath="." data-revision="1399664636889">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="6" data-basepath="." data-revision="1399666552927">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -533,6 +533,202 @@
                     <section class="normal" id="section-gitbook_31">
                     
                         <h1 id="rest-api">REST API</h1>
+<h2 id="general-considerations">General considerations</h2>
+<p>The REST API is designed to be as simple as possible but no more.</p>
+<ul>
+<li>It always returns JSON (or JSONP). There are no plans to support other formats.</li>
+<li>It respects most of the HTTP semantics but it is not an Hypermedia API.</li>
+<li>It uses a custom authorization system similar to OAuth or some services from Amazon Web Services.</li>
+<li>It supports JSONP so you can do API calls from the browser.</li>
+</ul>
+<h2 id="content-types-encoding-and-http-status">Content-Types, encoding and HTTP status</h2>
+<p>The API always returns <code>Content-Type: application/json; charset=utf-8</code> (or <code>text/javascript</code> for JSONP). It always returns UTF-8 and it always expects information to be received as UTF-8.</p>
+<p>The API can return several HTTP status codes.</p>
+<ul>
+<li>It will respond with 20x if everything goes ok</li>
+<li>If you are indicating a project, entity or object that does not exist it will respond with a status code 404</li>
+<li>It will respond with other 40x status codes if you send bad requests (bad API key, bad parameters, etc.)</li>
+<li>It will return 50x if an internal error occurs.</li>
+</ul>
+<h2 id="urls">URLs</h2>
+<p>Backbeam provides two subdomains to use the REST API of your project. The pattern is the following:</p>
+<p><code>http://api-&lt;env&gt;-&lt;your-project&gt;.backbeamapps.com</code></p>
+<p>The <code>env</code> is either <code>dev</code> or <code>pro</code> and the following part of the pattern is the identifier of your project. This identifier is the identifier you already see as subdomain when you are in the control panel.</p>
+<h2 id="api-authorization">API authorization</h2>
+<p>The authorization system is inspired on some mechanisms from OAuth and APIs like Amazon Web Services but it is a custom authorization system. It requires a pair of keys that you can create in your project. Notice that development and production keys are different.</p>
+<p>Each API request has at least 4 parameters:</p>
+<ul>
+<li><code>nonce</code> A unique identifier that needs to be between 30 and 42 characters long</li>
+<li><code>time</code> A timestamp used to prevent repetible requests. Be aware that if your system clock is out of sync by many seconds the request will be rejected.</li>
+<li><code>key</code> The shared key of your pair of keys</li>
+<li><code>signature</code> A signature calculated using the parameters of the request and the private key</li>
+</ul>
+<h2 id="signature-calculation">Signature calculation</h2>
+<p>The signature parameter is calculated using the parameters of the request. The parameters must be sent in the querystring of the URL for GET requests. For any other request parameters must be sent in the request body.</p>
+<p>To calculate the signature first generate a string concatenating the parameters in the following manner:</p>
+<p><code>param1=value 1&amp;param2=value 2&amp;param3=value 3&amp;param4=multi value 1&amp;param4=multi value 2</code></p>
+<p>This string looks like a querystring of an URL but it is not. It does not have its values escaped. Additionally when making API calls this string must include always at least two parameters relative to the request: a method parameter with the HTTP method and a path parameter with the path of the URL you are requesting.</p>
+<p>Parameters must be sorted in alphabetical order. If a parameter has multiple values append them as in the example above (sorting the values with alphabetical order). Once generated this string you just need to calculate an HMAC-SHA1 hash using the calculated string and the secret key of the key pair.</p>
+<p>The signature calculation has one exception: when requesting a file to download you don&#39;t include the nonce nor the time parameters. This is to prevent the URL to change in time. So it can be cached properly by the HTTP caching mechanisms.</p>
+<h2 id="jsonp-support">JSONP support</h2>
+<p>The Backbeam REST API supports JSONP. You can pass a <code>_method</code> and a callback parameter to any request. If you add a <code>_method</code> parameter that value would be taken as the HTTP method to perform the request. If you specify a callback parameter then the JSON response will be wrapped in a function call and the content-type of the request will be set to <code>text/javascript; charset=utf-8</code>.</p>
+<p>These parameters are ignored in the signature calculation. If you or the HTTP lib/framework you are using sends a &quot;_&quot; parameter it is also ignored. This parameter is common in some frameworks (like jQuery) to include a timestamp and thus generate always a unique URL and prevent any caching side-effect.</p>
+<p>When you indicate a callback parameter (and thus you are asking for JSONP support) the API always returns status code 200 since you won&#39;t be able to handle the response properly in other case.</p>
+<h2 id="response-structure">Response structure</h2>
+<p>Backbeam always returns a JSON object (<code>{}</code>) with a status parameter. If everything is ok status will be Success. In any other case this attribute indicates the reason of the error.</p>
+<p>In most cases the API returns objects and all the responses have the same structure. There is an objects attribute even if it only returns the information of one object. This attribute is an object whose keys are the identifiers of the objects. The values are objects indicating the fields and values of those objects.</p>
+<p>If the operation semantically only returns an object then there will be an id attribute with the unique identifier of that object. If the operation semantically could return more than object then there will be an ids attribute with an array of ids. When the operation has a query then it is also returned a counter named count indicating how many objects match the given query regardless of the number of returned objects (because you can limit the number of objects returned).</p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"status"</span>: <span class="hljs-string">"Success"</span>,
+  <span class="hljs-string">"objects"</span>: {
+    <span class="hljs-string">"uDiuuGIMMQ4O"</span>: {
+      <span class="hljs-string">"name#t"</span>: <span class="hljs-string">"Name of this place"</span>,
+      <span class="hljs-string">"description#rt"</span>: <span class="hljs-string">"The &lt;em&gt;description&lt;/em&gt; of this place"</span>,
+      <span class="hljs-string">"location#l"</span>: {
+        <span class="hljs-string">"lat"</span>: <span class="hljs-number">41.64364630414023</span>,
+        <span class="hljs-string">"lon"</span>: -<span class="hljs-number">0.8893990516662598</span>,
+        <span class="hljs-string">"hash"</span>: <span class="hljs-string">"ezrkgub"</span>,
+        <span class="hljs-string">"addr"</span>: <span class="hljs-string">"Street address of this location"</span>
+      },
+      <span class="hljs-string">"type#s"</span>: <span class="hljs-string">"Pub"</span>,
+      <span class="hljs-string">"created_at"</span>: <span class="hljs-number">1368520407344</span>,
+      <span class="hljs-string">"updated_at"</span>: <span class="hljs-number">1368520407344</span>,
+      <span class="hljs-string">"type"</span>: <span class="hljs-string">"place"</span>
+    }
+  },
+  <span class="hljs-string">"ids"</span>: [
+    <span class="hljs-string">"uDiuuGIMMQ4O"</span>
+  ],
+  <span class="hljs-string">"count"</span>: <span class="hljs-number">57</span>
+}
+</code></pre>
+<p>When you perform a query with joins then the objects attribute contains the main list of objects as well as the objects returned by the joins.</p>
+<p>There are some fields that are present in all objects:</p>
+<ul>
+<li><code>type</code> indicates to which entity this object is member of.</li>
+<li><code>created_at</code> contains a timestamp which is the date when this object was created.</li>
+<li><code>updated_at</code> contains a timestamp which is the date when this object was updated for the last time (or created if it has never been updated).</li>
+</ul>
+<p>The rest of the fields are defined by you in the control panel. In the JSON response they appear with their names followed by <code>#</code> and one or more characters. These characters indicate the data type of that field. JSON supports some data types such as strings or numbers but lacks of other data types such as dates. A date for example can be expressed as a string or as a number in a JSON object but this introduces a problem: if you don&#39;t know the semantics of a field in advance you don&#39;t know if a field is representing a date, a number or a string that may look like a date. Having these information with the field name removes this ambiguity. These are the available data types and the characters that indicate their presence:</p>
+<ul>
+<li>A text field is indicated with <code>#t</code>.</li>
+<li>A textarea field is indicated with <code>#ta</code>.</li>
+<li>A richtextarea field is indicated with <code>#rt</code>.</li>
+<li>A date field is indicated with <code>#d</code> and it is represented with a numerical timestamp.</li>
+<li>A number field is indicated with <code>#n</code>.</li>
+<li>A select field is indicated with <code>#s</code>  and it is represented with an string.</li>
+<li>A location field is indicated with <code>#l</code> and it is represented with an object with some fields like <code>lat</code>, <code>lon</code>, <code>hash</code> and <code>addr</code>.</li>
+<li>A relationship field is indicated with <code>#r</code> and it is represented in several ways.</li>
+<li>A select field is indicated with <code>#s</code> and it is represented with an string.</li>
+</ul>
+<p>If a field is a relationship &quot;to-one&quot; and you haven&#39;t performed a join over it then the API returns for that field an object with two attributes: <code>id</code> with unique identifier of that object and <code>type</code> indicating the identifier of the entity this object is member of.</p>
+<pre><code class="lang-javascript"><span class="hljs-string">"author#r"</span>: {
+    <span class="hljs-string">"id"</span>: <span class="hljs-string">"uDiuuGIMMQ4O"</span>,
+    <span class="hljs-string">"type"</span>: <span class="hljs-string">"user"</span>
+}
+</code></pre>
+<p>This is very useful if you are writing an SDK because you don&#39;t receive the information of the object (because you haven&#39;t joined it) but you know the identifier an the entity of the object, so you can create an empty object ready to be used for future operations.</p>
+<p>If you perform a join over that field then the API will return just one string indicating the unique identifier of the object. This object will be present in the objects attribute.</p>
+<p><code>&quot;author#r&quot;: &quot;uDiuuGIMMQ4O&quot;</code></p>
+<p>If a field is a relationship &quot;to-many&quot; and you have performed a join over that field then the API returns for that field an object with two attributes: result with an array of identifiers and count indicating the total of objects in the relationship.</p>
+<pre><code class="lang-javascript"><span class="hljs-string">"images#r"</span>: {
+    <span class="hljs-string">"result"</span>: [
+        <span class="hljs-string">"mDWuly5NaQxO"</span>
+    ],
+    <span class="hljs-string">"count"</span>: <span class="hljs-number">5</span>
+}
+</code></pre>
+<p>The joined objects will be present in the objects attribute.</p>
+<h2 id="commands">Commands</h2>
+<p>When you create or update objects you send commands. Each command performs an action over a field value. For example when you want to set the value of a field &quot;name&quot; you send a &quot;set&quot; command set-field. These are the available commands:</p>
+<ul>
+<li><code>set-&lt;fieldid&gt;</code> Sets the value of that field. Not applicable to relationships</li>
+<li><code>incr-&lt;fieldid&gt;</code> Increments the current value of this field. Only applicable to numbers</li>
+<li><code>add-&lt;fieldid&gt;</code> Adds an object to a collection. Only applicable to relationships &quot;to-many&quot;</li>
+<li><code>rem-&lt;fieldid&gt;</code> Removes an object from a collection. Only applicable to relationships &quot;to-many&quot;</li>
+<li><code>del-&lt;fieldid&gt;</code> Deletes the value of that field. Not applicable to relationships. In this case the value is ignored, but should not be an empty string. Send just &quot;-&quot; as value.</li>
+</ul>
+<h2 id="api-endpoints-for-data-manipulation">API endpoints for data manipulation</h2>
+<p>There are several API endpoints to query and manipulate data.</p>
+<h3 id="list-objects-of-a-given-entity">List objects of a given entity</h3>
+<p><code>GET /data/:entity</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>q</code> (optional): BQL query to determine which objects return</li>
+<li><code>params</code> (optional): parameters required by the BQL query</li>
+<li><code>limit</code> (optional): maximum number of objects to return</li>
+<li><code>offset</code> (optional): indicates the offset of the first object to return</li>
+</ul>
+<p><strong>Description</strong></p>
+<p>This URL returns a list of objects of a given entity optionally filtered by a BQL query.</p>
+<h3 id="list-objects-of-a-given-entity-near-to-a-given-geographical-location">List objects of a given entity near to a given geographical location</h3>
+<p><code>GET /data/:entity/near</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>q</code> (optional): BQL query to determine which objects return</li>
+<li><code>params</code> (optional): parameters required by the BQL query</li>
+<li><code>near</code> (required): field identifier to be used to calculate the nearest objects from</li>
+<li><code>lat</code> (required): latitude coordinate</li>
+<li><code>lon</code> (required): longitude coordinate</li>
+<li><code>limit</code> (optional): maximum number of objects to return</li>
+</ul>
+<p><strong>Description</strong></p>
+<p>This URL returns a list of the nearest objects from a given location optionally filtered by a BQL query. This</p>
+<h3 id="list-objects-of-a-given-entity-inside-a-geographical-bounding-box">List objects of a given entity inside a geographical bounding box</h3>
+<p><code>GET /data/:entity/bounding</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>q</code> (optional): BQL query to determine which objects return</li>
+<li><code>params</code> (optional): parameters required by the BQL query</li>
+<li><code>near</code> (required): field identifier to be used to calculate the nearest objects from</li>
+<li><code>swlat</code> (required): south-west latitude coordinate</li>
+<li><code>swlon</code> (required): south-west longitude coordinate</li>
+<li><code>nelat</code> (required): north-east latitude coordinate</li>
+<li><code>nelon</code> (required): north-east longitude coordinate</li>
+<li><code>limit</code> (optional): maximum number of objects to return</li>
+</ul>
+<p><strong>Description</strong></p>
+<p>This URL returns a list of objects contained in a geographical bounding box optinally filtered by q BQL query. The bounding box is defined by two coordinates: the south-west coordinate and the north-east coordinate.</p>
+<h3 id="read-an-existing-object">Read an existing object</h3>
+<p><code>GET /data/:entity/:id</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>joins (optional)</code>: part of a BQL query to perform joins over this object</li>
+<li><code>params (optional)</code>: parameters required by the BQL query</li>
+</ul>
+<p><strong>Description</strong></p>
+<p>This URL returns an object given its entity and unique identifier. Optionally you can porform some joins to fetch additional information.</p>
+<h3 id="create-an-object">Create an object</h3>
+<p><code>POST /data/:entity</code></p>
+<p><strong>Parameters</strong></p>
+<p>All parameters in this request are treated as &#39;commands&#39;. See the commands section.</p>
+<p><strong>Description</strong>
+This URL creates a new object of the given entity and returns the data of that object like in a GET operation.</p>
+<h3 id="update-an-object">Update an object</h3>
+<p><code>PUT /data/:entity/:id</code></p>
+<p><strong>Parameters</strong></p>
+<p>All parameters in this request are treated as &#39;commands&#39;. See the commands section.</p>
+<p><strong>Description</strong></p>
+<p>This URL updates an existing object and returns the data of that object like in a GET operation.</p>
+<h3 id="delete-an-object">Delete an object</h3>
+<p><code>DELETE /data/:entity/:id</code></p>
+<p><strong>Parameters</strong></p>
+<p>No parameters</p>
+<p><strong>Description</strong></p>
+<p>This URL deletes an existing object and returns the data of that object like in a GET operation.</p>
+<h2 id="api-endpoints-for-users-authentication">API endpoints for users authentication</h2>
+<p>There are a few API endpoints to authenticate users.</p>
+<h3 id="authenticate-a-user-using-email-password">Authenticate a user using email+password</h3>
+<p><code>POST /user/email/login</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>email</code> (required): the email of the user</li>
+<li><code>password</code> (required): the password of the user</li>
+<li><code>q</code> (optional): part of a BQL query to perform joins over the user if the login succeds</li>
+<li><code>params</code> (optional): parameters needed by the query</li>
+</ul>
+<p><strong>Description</strong></p>
+<p>This URL authenticates the user using email+password. If the login succeeds an auth attribute is returned.</p>
 
                     
                     </section>
