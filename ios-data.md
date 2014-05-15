@@ -186,6 +186,21 @@ BBObject* user = ...; // some user
 }];
 ```
 
+## Removing a single object
+
+If you have a reference to an object that is in the database you can remove it easily
+
+```objectivec
+BBObject *theObject = ...;
+[theObject remove:^(BBObject *object) {
+    NSLog(@"object removed");
+} failure:^(BBObject *object, NSError *err) {
+    NSLog(@"error %@", err);
+}];
+```
+
+The reference (`theObject`) must have the identifier of the object. So you either get the reference form a query or if you know the object identifier you can create a reference using `[Backbeam emptyObjectForEntity:@"entity" withIdentifier:@"object-identifier"]`.
+
 ## Files
 
 Files are special objects in Backbeam. They are plain `BBObjects` but you have more methods available. For example if you know that a file contains an image you can fetch the image with these methods:

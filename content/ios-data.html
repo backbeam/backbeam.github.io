@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.2" data-basepath="." data-revision="1400118303354">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.2" data-basepath="." data-revision="1400193446701">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -80,6 +80,10 @@
 
     <!-- Actions Right -->
     
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="google-plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="facebook"><i class="fa fa-facebook"></i></a>
     
     
     <a href="#" target="_blank" class="btn pull-right" data-sharing="twitter"><i class="fa fa-twitter"></i></a>
@@ -670,6 +674,16 @@ BBQuery *query = [Backbeam queryForEntity:@<span class="hljs-string">"user"</spa
   <span class="hljs-comment">// Something went wrong</span>
 }];
 </code></pre>
+<h2 id="removing-a-single-object">Removing a single object</h2>
+<p>If you have a reference to an object that is in the database you can remove it easily</p>
+<pre><code class="lang-objectivec">BBObject *theObject = ...;
+[theObject remove:^(BBObject *object) {
+    <span class="hljs-built_in">NSLog</span>(@<span class="hljs-string">"object removed"</span>);
+} failure:^(BBObject *object, <span class="hljs-built_in">NSError</span> *err) {
+    <span class="hljs-built_in">NSLog</span>(@<span class="hljs-string">"error %@"</span>, err);
+}];
+</code></pre>
+<p>The reference (<code>theObject</code>) must have the identifier of the object. So you either get the reference form a query or if you know the object identifier you can create a reference using <code>[Backbeam emptyObjectForEntity:@&quot;entity&quot; withIdentifier:@&quot;object-identifier&quot;]</code>.</p>
 <h2 id="files">Files</h2>
 <p>Files are special objects in Backbeam. They are plain <code>BBObjects</code> but you have more methods available. For example if you know that a file contains an image you can fetch the image with these methods:</p>
 <pre><code class="lang-objectivec">- (<span class="hljs-built_in">UIImage</span>*)imageWithSize:(<span class="hljs-built_in">CGSize</span>)size

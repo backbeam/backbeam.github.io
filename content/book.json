@@ -3,7 +3,7 @@
     "generator": "site",
     "title": null,
     "description": null,
-    "github": false,
+    "github": null,
     "plugins": ["disqus"],
     "pluginsConfig": {
         "fontSettings": {
@@ -21,8 +21,8 @@
         "issues": false,
         "contribute": null,
         "sharing": {
-            "google": false,
-            "facebook": false,
+            "google": null,
+            "facebook": null,
             "twitter": null
         }
     }
