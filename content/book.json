@@ -3,7 +3,7 @@
     "generator": "site",
     "title": null,
     "description": null,
-    "github": null,
+    "github": false,
     "plugins": ["disqus"],
     "pluginsConfig": {
         "fontSettings": {

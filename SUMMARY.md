@@ -1,14 +1,13 @@
 # Summary
 
-* [Overview](overview.md)
-    * [Features](overview-features.md)
+* [Features](overview.md)
     * [Query language](overview-query-language.md)
-    * [Control panel](overview-control-panel.md)
     * [Where to write the business logic](overview-business-logic.md)
     * [Users authentication](overview-authentication.md)
     * [Push notifications](overview-push-notifications.md)
     * [Email templates and delivery](overview-email-delivery.md)
     * [Realtime](overview-realtime.md)
+    * [Templating engine](overview-templating-engine.md)
 * [iOS SDK](ios-sdk.md)
     * [Objects and query results](ios-objects.md)
     * [Manipulating data](ios-data.md)

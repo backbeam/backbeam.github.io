@@ -185,3 +185,62 @@ BBObject* user = ...; // some user
   // Something went wrong
 }];
 ```
+
+## Files
+
+Files are special objects in Backbeam. They are plain `BBObjects` but you have more methods available. For example if you know that a file contains an image you can fetch the image with these methods:
+
+```objectivec
+- (UIImage*)imageWithSize:(CGSize)size
+          success:(SuccessImageBlock)success;
+
+- (UIImage*)imageWithSize:(CGSize)size
+          success:(SuccessImageBlock)success
+          failure:(FailureObjectBlock)failure;
+
+- (UIImage*)imageWithSize:(CGSize)size
+         progress:(ProgressDataBlock)progress
+          success:(SuccessImageBlock)success
+          failure:(FailureObjectBlock)failure;
+```
+
+These methods return an `UIImage `object if it is avaiable in the local cache and no block is invoked. If the image is not cached then the image is downloaded and passed to the success block if everything is ok and failure otherwise. Backbeam will download images optimized for the user's device. It will calculate the size in pixels depending on the size in points passed to these methods and depending on the screen density (retina or not).
+
+If you want to present images in `UITableViewCells` your code would be something like this:
+
+```objectivec
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  UITableViewCell* cell = ...; // dequeue or create a new UITableViewCell
+
+  BBObject* logo = ...; // a BBObject that contains an image
+  UIImage* image = [logo imageWithSize:CGSizeMake(40, 40) success:^(UIImage* image) {
+    [tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
+  }];
+  // If the image is not cached the 'image' object is nil.
+  // However we don't have to check if the image is nil, because if it's nil we want to display no image at all
+  // and this cell could have been dequeued so setting the image to nil cleans the previous image if set
+  cell.imageView.image = image;
+  // You can check if the image is nil if you want to put a placeholder image
+
+  return cell;
+}
+```
+
+The `reloadRowAtIndexPath:withRowAnimation:` does not exist but it would be a very useful method. You can easily create a `UITableView` category with this method.
+
+```objectivec
+- (void)reloadRowAtIndexPath:(NSIndexPath *)indexPath withRowAnimation:(UITableViewRowAnimation)animation {
+  if ([self.dataSource numberOfSectionsInTableView:self] <= indexPath.section) {
+    return;
+  }
+  if ([self.dataSource tableView:self numberOfRowsInSection:indexPath.section] <= indexPath.row) {
+    return;
+  }
+  [self reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+}
+```
+
+To create a new file object with some content you can create an empty `BBObject` using file as the entity identifier. Then you can upload content using one of the methods of that `BBObject` starting with `uploadData:xxx or uploadFile:xxx`. The diference between them is that for the first ones you pass the data in a `NSData` object and for the latters you pass the path of an actual file. There are different method signatures if you want to listen to the upload progress or not.
+
+If you want to download the content of a file object but you don't want to convert the data into an `UIImage` object then you can use the `downloadDataXXX` methods.
