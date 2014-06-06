@@ -81,5 +81,33 @@ If you are using server-side logic then the server (any of your web controllers)
 
 ## Troubleshooting push notifications
 
-TODO: control panel and logs.
+If you have problems with push notifications there are a few things you can check. First of all when you upload your push notifications certificates in the control panel you can navigate to the `Logs` section on the left menu and check that you see one or two messages like these:
 
+> Connecting to APN development (gateway.sandbox.push.apple.com)
+> Connecting to APN distribution (gateway.push.apple.com)
+
+If you don't see that message something wrong is happening. If your certificates are wrong you will see a message like this:
+
+> Too many SSL errors on APN connection. Check your certificates. (Underlying error: <APN error description>)
+
+If you see the success message(s) (`Connecting to APN ...`) and you are still not receiving the push notifcations the problem could be in your application rather than in the server-side configuration.
+
+First of all check that you are getting a valid token in your `AppDelegate`. Check that the following method is being called:
+
+```objectivec
+- (void)application:(UIApplication *)application
+    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+```
+
+If that method is not being called then check if the following method is being called and in that case inspect the returned error:
+
+```objectivec
+- (void)application:(UIApplication *)application
+    didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+```
+
+If you are getting a valid token and you are passing it to Backbeam but you are still not receiving push notifications you should check the `Logs` section again. Check if you are getting a message like this:
+
+> Unsubscribing device due to feedback service request: TxcvSFra5qgLA8PFCjcSGeCYudymSAhYHfDpOZQ/F5E=
+
+In that case you are compiling the application with a development certificate and you uploaded a distribution certificate or viceversa. So Apple is rejecting the device token.
