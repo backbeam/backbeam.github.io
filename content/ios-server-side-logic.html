@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.4" data-basepath="." data-revision="1400193446701">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.4" data-basepath="." data-revision="1402064885982">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -547,9 +547,9 @@
     <span class="hljs-built_in">NSLog</span>(@<span class="hljs-string">"error %@"</span>, error);
 }];
 </code></pre>
-<p>The only downside is that if the authenticated user changes the SDK will be notified and the new [Backbeam currentUser] will have changed but it will be empty. You could refresh it to have all its values populated.</p>
+<p>The only downside is that if the authenticated user changes the SDK will be notified and the new <code>[Backbeam currentUser]</code> will have changed but it will be empty. You could refresh it to have all its values populated.</p>
 <h2 id="uploading-and-downloading-data">Uploading and downloading data</h2>
-<p>These methods have an optional progress argument to listen to the upload progress. This is useful when uploading data like an image for example. To upload files to a controller you can use the BBFileUpload class. This is an example of how to invoke a controller with a file upload and listen to the upload progress to update a UIProgressView.</p>
+<p>These methods have an optional progress argument to listen to the upload progress. This is useful when uploading data like an image for example. To upload files to a controller you can use the <code>BBFileUpload</code> class. This is an example of how to invoke a controller with a file upload and listen to the upload progress to update a UIProgressView.</p>
 <pre><code class="lang-objectivec"><span class="hljs-comment">// Conver an image to an NSData object</span>
 NSData *data = UIImageJPEGRepresentation(image, <span class="hljs-number">0.7</span>);
 

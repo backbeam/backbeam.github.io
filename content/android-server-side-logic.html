@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.4" data-basepath="." data-revision="1400193446701">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.4" data-basepath="." data-revision="1402064885982">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -550,6 +550,33 @@
 });
 </code></pre>
 <p>The only downside is that if the authenticated user changes the SDK will be notified and the new <code>Backbeam.currentUser()</code> will have changed but it will be empty. You could refresh it to have all its values populated.</p>
+<h2 id="uploading-and-downloading-data">Uploading and downloading data</h2>
+<p>To upload files to a controller you can use the <code>FileUpload</code> class. There are two ways of creating a <code>FileUpload</code>:</p>
+<pre><code class="lang-java"><span class="hljs-keyword">new</span> FileUpload(File file, String mimeType)
+<span class="hljs-keyword">new</span> FileUpload(InputStream inputStream, String filename, String mimeType)
+</code></pre>
+<p>Once you have created a <code>FileUpload</code> you can pass it in the <code>params</code> argument when invoking a web controller. For example:</p>
+<pre><code class="lang-java">InputStream stream = <span class="hljs-keyword">null</span>;
+TreeMap&lt;String, Object&gt; params = <span class="hljs-keyword">new</span> TreeMap&lt;String, Object&gt;();
+params.put(<span class="hljs-string">"file"</span>, <span class="hljs-keyword">new</span> FileUpload(stream, <span class="hljs-string">"picture.jpg"</span>, <span class="hljs-string">"image/jpeg"</span>));
+Backbeam.requestJsonFromController(<span class="hljs-string">"POST"</span>, <span class="hljs-string">"/upload"</span>, params, FetchPolicy.REMOTE_ONLY, <span class="hljs-keyword">new</span> RequestCallback() {
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(Json json, <span class="hljs-keyword">boolean</span> fromCache) {
+        System.out.println(<span class="hljs-string">"Success!! "</span>+json);
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">failure</span>(BackbeamException exception) {
+        System.out.println(<span class="hljs-string">"exception"</span>);
+        exception.printStackTrace();
+    }
+});
+</code></pre>
+<p>In your web controller you will be able to acces the file using:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> file = req.files[<span class="hljs-string">'file'</span>]
+</code></pre>
+<p>For further information about how to handle files in server-side code refer to the section about <a href="javascript-server-side-logic.html#save-uploaded-objects">Save uploaded objects</a></p>
 
                     
                     </section>

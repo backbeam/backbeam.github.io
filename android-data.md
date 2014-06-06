@@ -195,7 +195,7 @@ The first argument is the entity identifier, the second is the unique identifier
 
 ## Working with files
 
-There is a special kind of entity that lets you hold files. It is the File entity. The entity itself holds information about the type of file, size, etc. If you need the download the content of the file you need to generate a URL. There is a special method called `composeFileURL` to which you can pass parameters. For example if you want to download an image you can transform it indicating a width and/or height. You can also pass `null` to this method.
+There is a special kind of entity that lets you hold files. It is the `file` entity. The entity itself holds information about the type of file, size, etc. If you need the download the content of the file you need to generate a URL. There is a special method called `composeFileURL` to which you can pass parameters. For example if you want to download an image you can transform it indicating a width and/or height. You can also pass `null` to this method.
 
 ```java
 TreeMap<String, Object> options = new TreeMap<String, Object>();
@@ -204,7 +204,7 @@ options.put("height", 40);
 String url = fileObject.composeFileURL(options);
 ````
 
-Note that the file object should have their properties loaded. Specially `File` objects have a `version` field that is required to generate the URL. This field changes everytime the file content changes. This way the URL changes everytime the content changes and there are no problems with any cache. In summary, be sure that the file has its version field loaded. You can't do a refresh if it is not loaded. And if the file object is the result of a query be sure to use a join on the relationship. See this example:
+Note that the file object should have their properties loaded. Specially `file` objects have a `version` field that is required to generate the URL. This field changes everytime the file content changes. This way the URL changes everytime the content changes and there are no problems with any cache. In summary, be sure that the file has its version field loaded. You can't do a refresh if it is not loaded. And if the file object is the result of a query be sure to use a join on the relationship. See this example:
 
 ```java
 Backbeam.select("company").setQuery("join logo").fetch(100, 0, new FetchCallback() {
@@ -220,6 +220,33 @@ Backbeam.select("company").setQuery("join logo").fetch(100, 0, new FetchCallback
 ```
 
 For images it is recommended to use an external library such as [Android Universal Image Loader](https://github.com/nostra13/Android-Universal-Image-Loader) to handle images efficiently.
+
+To createa a `file` from you Java code you can use the `uploadFile` method. This creates a new object in the database and uploads the content passed in the `FileUpload` object. There are two ways of creating a `FileUpload` object.
+
+```java
+new FileUpload(File file, String mimeType)
+new FileUpload(InputStream inputStream, String filename, String mimeType)
+```
+
+Let's see a complete example:
+
+```java
+BackbeamObject object = new BackbeamObject("file");
+object.uploadFile(new FileUpload(stream, "image.png", "image/png"), new ObjectCallback() {
+
+	@Override
+	public void success(BackbeamObject object) {
+		System.out.println("success!! "+object.getId());
+	}
+
+	@Override
+	public void failure(BackbeamException exception) {
+		System.out.println("failure!");
+		exception.printStackTrace();
+	}
+});
+
+```
 
 ## Geoqueries
 

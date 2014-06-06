@@ -31,3 +31,41 @@ Backbeam.requestJsonFromController("GET", "/", null, FetchPolicy.REMOTE_ONLY, ne
 ```
 
 The only downside is that if the authenticated user changes the SDK will be notified and the new `Backbeam.currentUser()` will have changed but it will be empty. You could refresh it to have all its values populated.
+
+## Uploading and downloading data
+
+To upload files to a controller you can use the `FileUpload` class. There are two ways of creating a `FileUpload`:
+
+```java
+new FileUpload(File file, String mimeType)
+new FileUpload(InputStream inputStream, String filename, String mimeType)
+```
+
+Once you have created a `FileUpload` you can pass it in the `params` argument when invoking a web controller. For example:
+
+```java
+InputStream stream = null;
+TreeMap<String, Object> params = new TreeMap<String, Object>();
+params.put("file", new FileUpload(stream, "picture.jpg", "image/jpeg"));
+Backbeam.requestJsonFromController("POST", "/upload", params, FetchPolicy.REMOTE_ONLY, new RequestCallback() {
+
+	@Override
+	public void success(Json json, boolean fromCache) {
+		System.out.println("Success!! "+json);
+	}
+
+	@Override
+	public void failure(BackbeamException exception) {
+		System.out.println("exception");
+		exception.printStackTrace();
+	}
+});
+```
+
+In your web controller you will be able to acces the file using:
+
+```javascript
+var file = request.files['file']
+```
+
+For further information about how to handle files in server-side code refer to the section about [Save uploaded objects](javascript-server-side-logic.html#save-uploaded-objects)

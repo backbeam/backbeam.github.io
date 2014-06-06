@@ -28,11 +28,11 @@ You can also invoke controllers that send JSON manually. The same side-effects r
 }];
 ```
 
-The only downside is that if the authenticated user changes the SDK will be notified and the new [Backbeam currentUser] will have changed but it will be empty. You could refresh it to have all its values populated.
+The only downside is that if the authenticated user changes the SDK will be notified and the new `[Backbeam currentUser]` will have changed but it will be empty. You could refresh it to have all its values populated.
 
 ## Uploading and downloading data
 
-These methods have an optional progress argument to listen to the upload progress. This is useful when uploading data like an image for example. To upload files to a controller you can use the BBFileUpload class. This is an example of how to invoke a controller with a file upload and listen to the upload progress to update a UIProgressView.
+These methods have an optional progress argument to listen to the upload progress. This is useful when uploading data like an image for example. To upload files to a controller you can use the `BBFileUpload` class. This is an example of how to invoke a controller with a file upload and listen to the upload progress to update a UIProgressView.
 
 ```objectivec
 // Conver an image to an NSData object
