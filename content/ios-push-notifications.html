@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.5" data-basepath="." data-revision="1402064885982">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="2.5" data-basepath="." data-revision="1404985091031">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -584,7 +584,29 @@ note<span class="hljs-variable">.iosPayload</span> = [<span class="hljs-built_in
 </code></pre>
 <p>If you are using server-side logic then the server (any of your web controllers) should be the one that should send the push notification.</p>
 <h2 id="troubleshooting-push-notifications">Troubleshooting push notifications</h2>
-<p>TODO: control panel and logs.</p>
+<p>If you have problems with push notifications there are a few things you can check. First of all when you upload your push notifications certificates in the control panel you can navigate to the <code>Logs</code> section on the left menu and check that you see one or two messages like these:</p>
+<blockquote>
+<p>Connecting to APN development (gateway.sandbox.push.apple.com)
+Connecting to APN distribution (gateway.push.apple.com)</p>
+</blockquote>
+<p>If you don&#39;t see that message something wrong is happening. If your certificates are wrong you will see a message like this:</p>
+<blockquote>
+<p>Too many SSL errors on APN connection. Check your certificates. (Underlying error: <APN error description>)</p>
+</blockquote>
+<p>If you see the success message(s) (<code>Connecting to APN ...</code>) and you are still not receiving the push notifcations the problem could be in your application rather than in the server-side configuration.</p>
+<p>First of all check that you are getting a valid token in your <code>AppDelegate</code>. Check that the following method is being called:</p>
+<pre><code class="lang-objectivec">- (<span class="hljs-keyword">void</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application
+    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+</code></pre>
+<p>If that method is not being called then check if the following method is being called and in that case inspect the returned error:</p>
+<pre><code class="lang-objectivec">- (<span class="hljs-keyword">void</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application
+    didFailToRegisterForRemoteNotificationsWithError:(<span class="hljs-built_in">NSError</span> *)error
+</code></pre>
+<p>If you are getting a valid token and you are passing it to Backbeam but you are still not receiving push notifications you should check the <code>Logs</code> section again. Check if you are getting a message like this:</p>
+<blockquote>
+<p>Unsubscribing device due to feedback service request: TxcvSFra5qgLA8PFCjcSGeCYudymSAhYHfDpOZQ/F5E=</p>
+</blockquote>
+<p>In that case you are compiling the application with a development certificate and you uploaded a distribution certificate or viceversa. So Apple is rejecting the device token.</p>
 
                     
                     </section>

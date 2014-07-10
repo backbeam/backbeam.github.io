@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.5" data-basepath="." data-revision="1402064885982">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.5" data-basepath="." data-revision="1404985091031">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -532,17 +532,19 @@
 <h2 id="enabling-the-realtime">Enabling the realtime</h2>
 <p>The realtime API is available when the SDK runs in the browser. The server-side implementation is limited by design and can only send realtime events but it cannot receive events.</p>
 <p>To enable the realtime API you only need to call the <code>backbeam.enableRealTime()</code> method.</p>
-<h2 id="subscribing-to-real-time-events">Subscribing to real time events</h2>
-<p>Send and receive realtime events is very easy. Here is an example of how to subscribe the device to a certain type of events and how to listen to the same type of events:</p>
+<h2 id="subscribing-to-realtime-events">Subscribing to realtime events</h2>
+<p>Receiving realtime events is very easy. Here is an example of how to subscribe the device to a certain type of events:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// subsribe to a kind of realtime event</span>
 backbeam.subscribeToRealTimeEvents(<span class="hljs-string">'my-event-name'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, data)</span> {</span>
     console.log(<span class="hljs-string">'received'</span>, data)
 })
-
-<span class="hljs-comment">// send relatime events</span>
+</code></pre>
+<h2 id="sending-realtime-events">Sending realtime events</h2>
+<p>Sending realtime events is very easy. You just need to specify the name of the event and the data you want to pass.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// send relatime events</span>
 backbeam.sendRealTimeEvent(<span class="hljs-string">'my-event-name'</span>, {say:text})
 </code></pre>
-<h2 id="listening-to-real-time-connection-changes">Listening to real time connection changes</h2>
+<h2 id="listening-to-realtime-connection-changes">Listening to realtime connection changes</h2>
 <p>You can also subscribe to the status of the realtime connection. You can listen to one or more event types</p>
 <pre><code class="lang-javascript">backbeam.subscribeToRealTimeConnectionEvents({
     connect: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>

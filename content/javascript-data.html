@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.1" data-basepath="." data-revision="1402064885982">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="4.1" data-basepath="." data-revision="1404985091031">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -565,10 +565,17 @@ backbeam.select(<span class="hljs-string">'user'</span>).query(<span class="hljs
 <h2 id="querying-and-refreshing-single-objects">Querying and refreshing single objects</h2>
 <p>It is easy to refresh the data of a given object. You just need to call the refresh method.</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = backbeam.empty(<span class="hljs-string">'place'</span>, known_id)
-obj.refresh(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
+obj.refresh(<span class="hljs-string">'join events having something = ?'</span>, someValue, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
   <span class="hljs-comment">// here the object is populated with its values if no error ocurred</span>
 })
 </code></pre>
+<p>The query and query parameters are optional. You can just pass the callback.</p>
+<p>You can also do the same in just one step with the <code>backbeam.read</code> method. Example:</p>
+<pre><code class="lang-javascript">backbeam.read(<span class="hljs-string">'place'</span>, known_id, <span class="hljs-string">'join events having something = ?'</span>, someValue, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error, obj)</span> {</span>
+  <span class="hljs-comment">// here the object is populated with its values if no error ocurred</span>
+})
+</code></pre>
+<p>The mandatory parameters are the entity identifier, the object identifier and the callback. The joins and its parameters are optionals. And you can also perform joins without arguments.</p>
 <h2 id="creating-and-updating-objects">Creating and updating objects</h2>
 <p>You can create an empty object and then save it as follows:</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = backbeam.empty(<span class="hljs-string">'place'</span>)

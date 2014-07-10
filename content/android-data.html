@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.2" data-basepath="." data-revision="1402064885982">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.2" data-basepath="." data-revision="1404985091031">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -682,14 +682,14 @@ obj.refresh(<span class="hljs-string">"join some-relationship"</span>, <span cla
 </code></pre>
 <p>The first argument is the entity identifier, the second is the unique identifier of that object and finally you pass the callback that will be called when the operation is complete. You can optionally pass a parameter that is part of a BQL query to join some relationships.</p>
 <h2 id="working-with-files">Working with files</h2>
-<p>There is a special kind of entity that lets you hold files. It is the File entity. The entity itself holds information about the type of file, size, etc. If you need the download the content of the file you need to generate a URL. There is a special method called <code>composeFileURL</code> to which you can pass parameters. For example if you want to download an image you can transform it indicating a width and/or height. You can also pass <code>null</code> to this method.</p>
+<p>There is a special kind of entity that lets you hold files. It is the <code>file</code> entity. The entity itself holds information about the type of file, size, etc. If you need the download the content of the file you need to generate a URL. There is a special method called <code>composeFileURL</code> to which you can pass parameters. For example if you want to download an image you can transform it indicating a width and/or height. You can also pass <code>null</code> to this method.</p>
 <pre><code class="lang-java">TreeMap&lt;String, Object&gt; options = <span class="hljs-keyword">new</span> TreeMap&lt;String, Object&gt;();
 options.put(<span class="hljs-string">"width"</span>, <span class="hljs-number">40</span>);
 options.put(<span class="hljs-string">"height"</span>, <span class="hljs-number">40</span>);
 String url = fileObject.composeFileURL(options);
 `
 </code></pre>
-<p>Note that the file object should have their properties loaded. Specially <code>File</code> objects have a <code>version</code> field that is required to generate the URL. This field changes everytime the file content changes. This way the URL changes everytime the content changes and there are no problems with any cache. In summary, be sure that the file has its version field loaded. You can&#39;t do a refresh if it is not loaded. And if the file object is the result of a query be sure to use a join on the relationship. See this example:</p>
+<p>Note that the file object should have their properties loaded. Specially <code>file</code> objects have a <code>version</code> field that is required to generate the URL. This field changes everytime the file content changes. This way the URL changes everytime the content changes and there are no problems with any cache. In summary, be sure that the file has its version field loaded. You can&#39;t do a refresh if it is not loaded. And if the file object is the result of a query be sure to use a join on the relationship. See this example:</p>
 <pre><code class="lang-java">Backbeam.select(<span class="hljs-string">"company"</span>).setQuery(<span class="hljs-string">"join logo"</span>).fetch(<span class="hljs-number">100</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> FetchCallback() {
   <span class="hljs-annotation">@Override</span>
   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;BackbeamObject&gt; companies, <span class="hljs-keyword">int</span> totalCount, <span class="hljs-keyword">boolean</span> fromCache) {
@@ -702,6 +702,26 @@ String url = fileObject.composeFileURL(options);
 });
 </code></pre>
 <p>For images it is recommended to use an external library such as <a href="https://github.com/nostra13/Android-Universal-Image-Loader" target="_blank">Android Universal Image Loader</a> to handle images efficiently.</p>
+<p>To createa a <code>file</code> from you Java code you can use the <code>uploadFile</code> method. This creates a new object in the database and uploads the content passed in the <code>FileUpload</code> object. There are two ways of creating a <code>FileUpload</code> object.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">new</span> FileUpload(File file, String mimeType)
+<span class="hljs-keyword">new</span> FileUpload(InputStream inputStream, String filename, String mimeType)
+</code></pre>
+<p>Let&#39;s see a complete example:</p>
+<pre><code class="lang-java">BackbeamObject object = <span class="hljs-keyword">new</span> BackbeamObject(<span class="hljs-string">"file"</span>);
+object.uploadFile(<span class="hljs-keyword">new</span> FileUpload(stream, <span class="hljs-string">"image.png"</span>, <span class="hljs-string">"image/png"</span>), <span class="hljs-keyword">new</span> ObjectCallback() {
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(BackbeamObject object) {
+        System.out.println(<span class="hljs-string">"success!! "</span>+object.getId());
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">failure</span>(BackbeamException exception) {
+        System.out.println(<span class="hljs-string">"failure!"</span>);
+        exception.printStackTrace();
+    }
+});
+</code></pre>
 <h2 id="geoqueries">Geoqueries</h2>
 <p>You can perform geoqueries on entities having at least one field whose type is set to location. There are two types of geolocated queries: you can query the closest objects to a given point or you can query the objects inside a bounding box.</p>
 <h3 id="fetching-the-closest-objects-to-a-location">Fetching the closest objects to a location</h3>

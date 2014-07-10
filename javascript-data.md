@@ -57,10 +57,23 @@ It is easy to refresh the data of a given object. You just need to call the refr
 
 ```javascript
 var obj = backbeam.empty('place', known_id)
-obj.refresh(function(error) {
+obj.refresh('join events having something = ?', someValue, function(error) {
   // here the object is populated with its values if no error ocurred
 })
 ```
+
+The query and query parameters are optional. You can just pass the callback.
+
+You can also do the same in just one step with the `backbeam.read` method. Example:
+
+```javascript
+backbeam.read('place', known_id, 'join events having something = ?', someValue, function(error, obj) {
+  // here the object is populated with its values if no error ocurred
+})
+```
+
+The mandatory parameters are the entity identifier, the object identifier and the callback. The joins and its parameters are optionals. And you can also perform joins without arguments.
+
 
 ## Creating and updating objects
 
