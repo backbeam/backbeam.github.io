@@ -122,6 +122,28 @@ Backbeam.unsubscribeFromChannels(new OperationCallback() {
 }, "foo-channel", "bar-channel");
 ```
 
+You can also unsubscribe the current device to all the subscribed channels:
+
+```java
+Backbeam.unsubscribeFromAllChannels(new OperationCallback() {
+    @Override
+    public void success() {
+      System.out.println("unsubscribed from all channels");
+    }
+});
+```
+
+And you can query to which channels the current device is subscribed:
+
+```java
+Backbeam.subscribedChannels(new ListCallback() {
+    @Override
+    public void success(List<String> array) {
+      System.out.println("subscribed channels: "+array);
+    }
+});
+```
+
 If you are using server-side logic you should send the device token (`registrationId`) to a web controller. Then that controller should subscribe the device to the desired channels. You can always access the registrationId using `Backbeam.registrationId()` (if it was requested and stored correctly).
 
 ## Sending push notifications
