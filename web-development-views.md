@@ -82,7 +82,7 @@ You can extend the capabilities of the templating engine by setting your own cus
 
 `{{ my_string_variable|default('the string was empty') }}`
 
-But you can also define your own filters. You need to create a file called filters.js in the Libraries section. All the functions exported in this file will be used as custom filters. For example, if you define a function like this in the filters.js file:
+But you can also define your own filters. You need to create a file called `filters.js` in the Libraries section. All the functions exported in this file will be used as custom filters. For example, if you define a function like this in the filters.js file:
 
 ```javascript
 module.exports.pluralize = function(count, singular, plural) {
