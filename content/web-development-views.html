@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.4" data-basepath="." data-revision="1404985091031">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="5.4" data-basepath="." data-revision="1411501599402">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -577,7 +577,7 @@ response.render(<span class="hljs-string">'index.html'</span>, { message:message
 <h2 id="custom-filters">Custom filters</h2>
 <p>You can extend the capabilities of the templating engine by setting your own custom filters. There are several builtin filters, for example:</p>
 <p><code>{{ my_string_variable|default(&#39;the string was empty&#39;) }}</code></p>
-<p>But you can also define your own filters. You need to create a file called filters.js in the Libraries section. All the functions exported in this file will be used as custom filters. For example, if you define a function like this in the filters.js file:</p>
+<p>But you can also define your own filters. You need to create a file called <code>filters.js</code> in the Libraries section. All the functions exported in this file will be used as custom filters. For example, if you define a function like this in the filters.js file:</p>
 <pre><code class="lang-javascript">module.exports.pluralize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(count, singular, plural)</span> {</span>
     <span class="hljs-keyword">return</span> count &gt; <span class="hljs-number">1</span> ? plural : singular
 }

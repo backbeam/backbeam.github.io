@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.5" data-basepath="." data-revision="1404985091031">
+    <div class="book" data-github="backbeam/backbeam.github.io" data-level="3.5" data-basepath="." data-revision="1411501599402">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -632,6 +632,22 @@ Backbeam.enableGCM(senderID, <span class="hljs-keyword">new</span> GCMCallback()
     System.out.println(<span class="hljs-string">"subscription failure "</span>+exception);
   }
 }, <span class="hljs-string">"foo-channel"</span>, <span class="hljs-string">"bar-channel"</span>);
+</code></pre>
+<p>You can also unsubscribe the current device to all the subscribed channels:</p>
+<pre><code class="lang-java">Backbeam.unsubscribeFromAllChannels(<span class="hljs-keyword">new</span> OperationCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>() {
+      System.out.println(<span class="hljs-string">"unsubscribed from all channels"</span>);
+    }
+});
+</code></pre>
+<p>And you can query to which channels the current device is subscribed:</p>
+<pre><code class="lang-java">Backbeam.subscribedChannels(<span class="hljs-keyword">new</span> ListCallback() {
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">success</span>(List&lt;String&gt; array) {
+      System.out.println(<span class="hljs-string">"subscribed channels: "</span>+array);
+    }
+});
 </code></pre>
 <p>If you are using server-side logic you should send the device token (<code>registrationId</code>) to a web controller. Then that controller should subscribe the device to the desired channels. You can always access the registrationId using <code>Backbeam.registrationId()</code> (if it was requested and stored correctly).</p>
 <h2 id="sending-push-notifications">Sending push notifications</h2>
