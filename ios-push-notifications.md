@@ -51,16 +51,30 @@ Subscribing the device to push notifications
 If you are using client-side logic (remember to configure your API keys), you can subscribe and unsubscribe the device to any channel directly from your Android code. Let's see how to subscribe the device to a couple of channels:
 
 ```objectivec
-- (BOOL)subscribeToChannels:(NSArray*)channels success:(SuccessBlock)success failure:(FailureBlock)failure
++ (BOOL)subscribeToChannels:(NSArray*)channels success:(SuccessBlock)success failure:(FailureBlock)failure
 ```
 
 And of course you can unsubscribe the device from one or more channels using
 
 ```objectivec
-- (BOOL)unsubscribeFromChannels:(NSArray*)channels success:(SuccessBlock)success failure:(FailureBlock)failure
++ (BOOL)unsubscribeFromChannels:(NSArray*)channels success:(SuccessBlock)success failure:(FailureBlock)failure
 ```
 
 These methods return NO if the device is not registered for push notifications.
+
+Additionally you can unsubscribe a device from all channels with the following method:
+
+```objectivec
+- (void)unsubscribeFromAllChannels:(SuccessBlock)success failure:(FailureBlock)failure
+```
+
+Or list the channels a device is subscribed to:
+
+```objectivec
++ (void)subscribedChannels:(SuccessArrayBlock)success
+                   failure:(FailureBlock)failure
+```
+
 
 If you are using server-side logic you can pass the device token to a web controller and then subscribe/unsubscribe the device to any channel in your server-side code. You can access the device token of the iOS device at any time using [Backbeam deviceToken] if it was requested and persisted correctly.
 
